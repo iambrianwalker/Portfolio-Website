@@ -1,7 +1,3 @@
-Here's a draft for your portfolio website README:
-
----
-
 # Portfolio Website
 
 **Author**: Brian  
