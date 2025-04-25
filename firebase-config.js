@@ -1,8 +1,3 @@
-
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 export const firebaseConfig = {
     apiKey: "AIzaSyBJ8q682l2_wURuPbO5SaR12H_vIambWZ8",
@@ -13,4 +8,4 @@ export const firebaseConfig = {
     messagingSenderId: "810943467823",
     appId: "1:810943467823:web:59b97d4cdb05d7f2ea91da",
     measurementId: "G-X15PM7V763"
-};
+  };

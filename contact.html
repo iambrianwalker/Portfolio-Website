@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width , initial-scale=1.0">
+        <title>Portfolio Homepage</title>
+        <link rel="stylesheet" href="./homepage.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    </head>
+
+    <div id="header">
+        <div class="container">
+            <nav>
+                <a href="./index.html">About</a>
+                <a href="./projects.html">Projects</a>
+                <a href="#">Contact</a>
+            </nav>
+            <div class="header-text">
+                <h1>
+                    <i>Software Engineer</i>
+                    <span>Brian Walker</span>
+                </h1>
+            </div>
+        </div>
+    </div>
+<!-----Contact------>
+    <body>
+        <div id="contact">
+            <div class="container">
+                <h1 class="sub-title">Contact Me</h1>
+                <div class="row">
+                    <div class="contact-left">
+                        <div class="social-icons">
+                            <p>
+                                <i class="fa-solid fa-envelope"></i>
+                                bwalker37837@gmail.com
+                            </p>
+                        </div>
+                        <div class="social-icons">
+                            <p>
+                                <i class="fa-solid fa-phone"></i>
+                                (404) 719 - 6343
+                            </p>
+                        </div>
+                        <div class="social-icons">
+                            <a href="https://www.linkedin.com/in/brian2025/" title="Linkedin">
+                                <i class="fa-brands fa-linkedin"></i>
+                            </a>
+                        </div>
+                        <a href="./Resume Template.docx" download class="btn">
+                            Download Resume
+                        </a>
+                    </div>
+                    <div class="contact-right">
+                        <form id="contactForm">
+                            <input type="text" name="Name" id="name" placeholder="Your Name" required>
+                            <input type="email" name="Email" id="email" placeholder="Your Email" required>
+                            <textarea name="Message" rows="6" id="message" placeholder="Your Message"></textarea>
+                            <button type="submit" class="btn">Submit</button>
+                        </form>
+                        <span id="msg"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="module">
+            // Import the functions you need from the SDKs you need
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+            import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
+            import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+            // TODO: Add SDKs for Firebase products that you want to use
+            // https://firebase.google.com/docs/web/setup#available-libraries
+          
+            // Your web app's Firebase configuration
+            // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+            import { firebaseConfig } from './firebase-config.js';
+          
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const db = getDatabase(app); // Initialize the database properly using the modular SDK
+
+            // Handle form submission
+            document.getElementById('contactForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                // Get form values
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const message = document.getElementById('message').value;
+
+                // Use the modular `ref` function correctly
+                const contactFormDB = ref(db, 'contactForm'); // Pass the database instance and path to `ref`
+                const newContactForm = push(contactFormDB); // Push new data
+                set(newContactForm, {
+                    message: message,
+                    email: email,
+                    name: name
+                })
+                .then(() => {
+                    alert('Message saved successfully!');
+                    document.getElementById('contactForm').reset();
+                })
+                .catch((error) => {
+                    console.error('Error saving message:', error);
+                    alert('Failed to save the message.');
+
+                });
+            });
+
+        </script>
+    </body>
+</html>
