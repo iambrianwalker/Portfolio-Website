@@ -20,10 +20,10 @@ Welcome to my portfolio website! This platform is designed to showcase my skills
 ---
 
 ## 📖 Technologies Used
-- **Frontend**: [HTML, CSS, JavaScript, or your chosen framework/library, e.g., React, Vue.js]
-- **Backend**: [Node.js, Django, Flask, or any other backend technology you're using]
-- **Hosting**: [GitHub Pages, Netlify, Vercel, etc.]
-- **Database**: [MySQL, Firebase, MongoDB, etc., if applicable]
+- **Frontend**: [HTML, CSS, JavaScript, JSON]
+- **Backend**: [In the works]
+- **Hosting**: [GitHub Pages]
+- **Database**: [Firebase]
 
 ---
 
