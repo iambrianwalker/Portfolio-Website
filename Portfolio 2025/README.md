@@ -36,7 +36,7 @@ To view the live version of the portfolio website:
 ## ⚙️ Setup Instructions
 1. Clone the repository:  
    ```bash
-   git clone [Insert repository URL]
+   git clone "https://github.com/iambrianwalker/Portfolio-Website.git"
    ```
 2. Navigate to the project directory:  
    ```bash
@@ -63,6 +63,6 @@ To view the live version of the portfolio website:
 
 ## 📫 Contact
 Feel free to reach out with any questions or collaboration opportunities!  
-- **Email**: [Insert your email here]  
-- **LinkedIn**: [Insert LinkedIn profile URL]  
-- **GitHub**: [Insert GitHub profile URL]  
+- **Email**: [bwalker37837@gmail.com]  
+- **LinkedIn**: [www.linkedin.com/in/brian2025]  
+- **GitHub**: [https://github.com/iambrianwalker]  
