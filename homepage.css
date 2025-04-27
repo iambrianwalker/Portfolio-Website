@@ -18,18 +18,23 @@ body {
     padding: 20px 0;
 }
 
+/* Default desktop styles (mobile-first) */
 nav {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
+    display: flex; /* Default flex layout for desktop */
+    justify-content: center; /* Align links horizontally */
+    padding: 10px;
+    z-index: 1000;
 }
 
 nav a {
-    color: #fff;
+    color: white;
     text-decoration: none;
-    font-size: 18px;
-    padding: 0 10px;
+    font-size: 16px;
+    padding: 10px 15px;
+}
+
+.menu-toggle{
+    display: none;
 }
 
 /* Header text */
@@ -82,30 +87,39 @@ nav a {
 
 .tab-titles {
     display: flex;
-    margin: 20px 0 40px;
+    justify-content: center;
+    text-align: center;
 }
 
-.tab-links {
-    margin-right: 50px;
+.tab-titles p {
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 600;
+    padding: 10px 20px;
+    background-color: transparent;
+    color: #a50b0b;
     cursor: pointer;
-    position: relative;
+    position: relative; /* Required for positioning the underline */
 }
 
-.tab-links::after {
-    content: '';
+/* Active Tab Indicator (Underline) */
+.tab-titles p.active-link::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
     width: 0;
     height: 3px;
-    background: #fff;
-    position: absolute;
-    left: 0;
-    bottom: -8px;
-    transition: 0.5s;
+    background-color: #a50b0b; /* Underline color for active tab */
+    transition: all 0.5s ease;
 }
 
-.tab-links.active-link::after {
+.tab-titles.active-link::after{
     width: 50%;
+}
+
+/* Hover Effect */
+.tab-titles p:hover {
+    color: white;  /* Color change on hover */
 }
 
 .tab-contents ul li {
@@ -238,24 +252,111 @@ form .btn{
     body {
         font-size: 16px;
     }
+
     .row {
         flex-direction: column;
         align-items: center;
+        text-align: center;
     }
-    nav {
+
+    /* Hamburger button (menu toggle) */
+    .menu-toggle {
+        display: block; /* show on small screens */
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 28px;
+        color: red; /* change to red or any color you want */
+        z-index: 1100;
+    }
+
+    /* Mobile navigation menu */
+    nav.mobile-nav {
+        display: none; /* Start hidden */
+        position: absolute;
+        top: 60px; /* Adjust to fit the header height */
+        right: 0;
+        width: 250px; /* Adjust the width as needed */
+        background-color: black;
         flex-direction: column;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        opacity: 0;
+        transform: translateX(100%); /* Start off-screen */
     }
+
+    nav.mobile-nav.show {
+        display: flex;
+        opacity: 1;
+        transform: translateX(0); /* Slide in from the right */
+    }
+
     nav a {
-        padding: 10px 0;
+        color: red; /* Set nav link color to red */
+        text-decoration: none;
         font-size: 16px;
+        padding: 10px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        width: 100%; /* Ensure links stretch the full width */
     }
+
+    .about-container {
+        display: flex;
+        flex-direction: column;  /* Stack elements vertically */
+        align-items: center;     /* Center elements horizontally */
+        text-align: center;      /* Center text inside the container */
+    }
+    
     .about-picture, .about-description {
-        flex-basis: 100%;
+        flex-basis: auto;        /* Allow the elements to grow naturally */
+        margin-top: 1rem;        /* Add some space between the picture and description */
     }
+
+    .about-description {
+        letter-spacing: 0.5px;  /* Adds spacing between letters */
+        line-height: 1.6;  /* Increases space between lines */
+        padding: 10px;  /* Adds some padding for better readability */
+    }
+    
+    .about-picture {
+        margin-bottom: 1rem;     /* Add space below the picture */
+    }
+
     .contact-left, .contact-right {
         flex-basis: 100%;
     }
+
     .project-list {
-        grid-template-columns: 1fr; /* One column on small screens */
+        grid-template-columns: 1fr;
     }
+
+    .tab-titles {
+        display: flex;
+        flex-direction: column;  /* Stacks the tabs vertically */
+        align-items: center;  /* Centers the tabs horizontally */
+        gap: 15px;
+        padding: 20px 0;
+    }
+    
+    .tab-titles p {
+        font-size: 18px;
+        font-weight: 600;
+        padding: 12px 25px;
+        background-color: transparent;
+        color: #a50b0b;
+        cursor: pointer;
+        border-radius: 25px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.5s ease;
+    }
+    
+    .tab-titles p:hover {
+        color: white;
+    }
+    
 }
