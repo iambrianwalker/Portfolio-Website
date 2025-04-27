@@ -3,20 +3,26 @@
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewpoint" content="width=device-width , initial-scale=1.0">
+        <meta name="viewport" content="width=device-width , initial-scale=1.0">
         <title>Portfolio Homepage</title>
-        <link rel="stylesheet" href="./homepage.css">
+        <link rel="stylesheet" href="/Portfolio 2025/css/homepage.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     </head>
 
     <div id="header">
         <div class="container">
-            <nav>
+            <!-- Hamburger Icon -->
+            <button class="menu-toggle" onclick="toggleMenu()">&#9776;</button>
+    
+            <!-- Navigation Menu -->
+            <nav class="mobile-nav">
                 <a href="#about">About</a>
-                <a href="./projects.html">Projects</a>
-                <a href="./contact.html">Contact</a>
+                <a href="/Portfolio 2025/html/projects.html">Projects</a>
+                <a href="/Portfolio 2025/html/contact.html">Contact</a>
             </nav>
+    
+            <!-- Header Text -->
             <div class="header-text">
                 <h1>
                     <i>Software Engineer</i>
@@ -25,13 +31,14 @@
             </div>
         </div>
     </div>
+    
 <!--------About-------->
     <body>
         <div id="about">
             <div class="container">
                 <div class="row">
                     <div class="about-picture">
-                        <img src="./Headshot.jpg" 
+                        <img src="/Portfolio 2025/pictures/Headshot.jpg" 
                         alt="Headshot of Brian Walker">
                     </div>
                     <div class="about-description">
@@ -61,10 +68,11 @@
                             the future together.
                         </p>
                         <div class="tab-titles">
-                            <p class="tab-links active-link" onclick="opentab('skills')">Skills</p>
-                            <p class="tab-links" onclick="opentab('experience')">Experience</p>
-                            <p class="tab-links" onclick="opentab('education')">Education</p>
+                            <p class="tab-link" onclick="opentab('skills')"><i class="icon">💻</i> Skills</p>
+                            <p class="tab-link" onclick="opentab('experience')"><i class="icon">📆</i> Experience</p>
+                            <p class="tab-link" onclick="opentab('education')"><i class="icon">🎓</i> Education</p>
                         </div>
+                        
                         <div class="tab-contents active-tab" id="skills">
                             <ul>
                                 <li>
@@ -130,6 +138,7 @@
                         <a href="https://github.com/iambrianwalker/Temperature-Conversion.git">
                             <div class="layer">
                                 <h3>Temperature Converter</h3>
+                                <a href="/Portfolio 2025/Readme files/ReadmeTemp.md">README: Temperature Converter</a>
                             </div>
                         </a>
                     </div>
@@ -138,6 +147,7 @@
                         <a href="https://github.com/malclifton/PetPal.git">
                             <div class="layer">
                                 <h3>Petpal - Petcare Application</h3>
+                                <a href="/Portfolio 2025/Readme files/ReadmePetpal.md">README: Petpal</a>
                             </div>
                         </a>
                     </div>
@@ -152,7 +162,7 @@
                         </a>
                     </div>
                 </div>
-                <a href="projects.html" class="btn">See more</a>
+                <a href="/Portfolio 2025/html/projects.html" class="btn">See more</a>
             </div>
         </div>
         <script>
@@ -170,5 +180,21 @@
                 document.getElementById(tabname).classList.add("active-tab");
             }
         </script>
+        <script>
+            function toggleMenu() {
+                const nav = document.querySelector('.mobile-nav');
+                nav.classList.toggle('show');
+            }
+        
+            document.addEventListener('DOMContentLoaded', () => {
+                const navLinks = document.querySelectorAll('.mobile-nav a');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        document.querySelector('.mobile-nav').classList.remove('show');
+                    });
+                });
+            });
+        </script>
+        
     </body>
 </html>
