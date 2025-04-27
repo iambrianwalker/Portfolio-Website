@@ -756,6 +756,29 @@ form .btn{
     .row {
         flex-direction: column;
         align-items: center;
+    }
+    nav {
+        flex-direction: column;
+    }
+    nav a {
+        padding: 10px 0;
+        font-size: 16px;
+    }
+    .about-picture, .about-description {
+        flex-basis: 100%;
+    }
+    .contact-left, .contact-right {
+        flex-basis: 100%;
+    }
+    .project-list {
+        grid-template-columns: 1fr; /* One column on small screens */
+    }
+}
+=======
+
+    .row {
+        flex-direction: column;
+        align-items: center;
         text-align: center;
     }
 
@@ -860,3 +883,4 @@ form .btn{
     }
     
 }
+
