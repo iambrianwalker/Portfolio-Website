@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width , initial-scale=1.0">
+        <meta name="description" content="This is a portfolio to display my professional skills." />
+        <title>Portfolio Homepage - About</title>
+        <link rel="stylesheet" href="/portfolioWebsite/assets/css/homepage.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <link rel="icon" href="/portfolioWebsite/assets/favicon.ico" type="image/x-icon">
+        <link rel="apple-touch-icon" href="/portfolioWebsite/assets/images/apple-icon-180x180.png">
+    </head>
+
+    <div id="header">
+        <div class="container">
+            <!-- Hamburger Icon -->
+            <button class="menu-toggle" onclick="toggleMenu()">&#9776;</button>
+    
+            <!-- Navigation Menu -->
+            <nav class="mobile-nav">
+                <a href="#about">About</a>
+                <a href="/portfolioWebsite/projects.html">Projects</a>
+                <a href="/portfolioWebsite/contact.html">Contact</a>
+            </nav>
+    
+            <!-- Header Text -->
+            <div class="header-text">
+                <h1>
+                    <i>Software Engineer</i>
+                    <span>Brian Walker</span>
+                </h1>
+            </div>
+        </div>
+    </div>
+    
+<!--------About-------->
+    <body>
+        <div id="about">
+            <div class="container">
+                <div class="row">
+                    <div class="about-picture">
+                        <img src="/portfolioWebsite/assets/images/Headshot.jpg" 
+                        alt="Headshot of Brian Walker">
+                    </div>
+                    <div class="about-description">
+                        <h1 class="sub-title">About Me</h1>
+                        <p>
+                            Hi, I'm Brian Walker, a tech enthusiast with a passion 
+                            for innovation and problem-solving. I graduated from 
+                            Georgia State University, where my fascination with 
+                            computers and coding really took off. Over the years, 
+                            I've honed my skills in software development, web development, 
+                            and cyber security.
+                            
+                            What excites me most about technology is the 
+                            collaborative spirit it fosters—when diverse ideas and 
+                            perspectives come together, creativity flourishes, and 
+                            progress happens. Whether I'm exploring the latest 
+                            tech trends, contributing to open-source projects, or 
+                            fine-tuning my coding abilities, I love finding ways 
+                            to use technology to make a meaningful difference.
+                            
+                            As I continue to grow in the ever-evolving tech 
+                            landscape, I'm eager to connect with others who 
+                            share the drive to innovate. Tackling challenges and 
+                            building transformative solutions that positively 
+                            impact the world is what fuels my journey.
+                        </p>
+                        <div class="tab-titles">
+                            <p class="tab-link" onclick="opentab('skills')"><i class="icon">💻</i> Skills</p>
+                            <p class="tab-link" onclick="opentab('experience')"><i class="icon">📆</i> Experience</p>
+                            <p class="tab-link" onclick="opentab('education')"><i class="icon">🎓</i> Education</p>
+                        </div>
+                        
+                        <div class="tab-contents active-tab" id="skills">
+                            <ul>
+                                <li>
+                                    <span><b>Programming Languages</b></span>
+                                    <p>Python, Java, CSS, HTML, JavaScript, C#, Swift, PHP</p>
+                                </li>
+                                <li>
+                                    <span><b>Computer software/frameworks</b></span>
+                                    <p>Microsoft office, Adobe Photoshop, React, jQuery, Node.js, GitHub, Git, MySQL</p>
+                                </li>
+                                <li>
+                                    <span><b>Languages</b></span>
+                                    <p>English (Fluent), Spanish (Classroom Level), Japanese (Classroom Level)</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-contents" id="experience">
+                            <ul>
+                                <li>
+                                    <span>2025 - Current</span>
+                                    <p>Valet Attendent at <b>LAZ Parking</b></p>
+                                </li>
+                                <li>
+                                    <span>2024 - Current</span>
+                                    <p>Valet Attendent at <b>Parking Management Company (PMC)</b></p>
+                                </li>
+                                <li>
+                                    <span>2024 (Jan -Nov)</span>
+                                    <p>Valet Attendent at National Parking</p>
+                                </li>
+                                <li>
+                                    <span>2021 - 2024</span>
+                                    <p>Tech Consultant at <b>Target</b></p>
+                                </li>
+                                <li>
+                                    <span>2019 - 2021</span>
+                                    <p>Sales Associate at <b>Footlocker</b></p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-contents" id="education">
+                            <ul>
+                                <li>
+                                    <span>2021 - 2025</span>
+                                    <br>Bachelors in Computer Science 
+                                    from Georgia State University
+                                    <span></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+
+        <!-------Projects Preview----->
+        <div id="projects">
+            <div class="container">
+                <h1 class="sub-title">My Projects</h1>
+                <div class="project-list">
+                    <div class="btn">
+                        <span class="material-symbols-outlined">thermometer</span>
+                        <a href="https://github.com/iambrianwalker/Temperature-Conversion.git">
+                            <div class="layer">
+                                <h2>Temperature Converter</h2>
+                                <a href="/portfolioWebsite/assets/mdList/ReadmeTemp.md">README: Temperature Converter</a>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="btn">
+                        <span class="material-symbols-outlined">pets</span>
+                        <a href="https://github.com/malclifton/PetPal.git">
+                            <div class="layer">
+                                <h2>Petpal - Petcare Application</h2>
+                                <a href="/portfolioWebsite/assets/mdList/ReadmePetpal.md">README: Petpal</a>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="btn">
+                        <span class="material-symbols-outlined">wifi</span>
+                        <a href="https://github.com/iambrianwalker/Portfolio-Website.git">
+                            <div class="layer">
+                                <h2>Portfolio Website</h2>
+                                <a href="/portfolioWebsite/assets/mdList/ReadmePort.md">README: Portfolio Website</a>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <a href="/portfolioWebsite/projects.html" class="btn">See more</a>
+            </div>
+        </div>
+        <script>
+            var tablinks = document.getElementsByClassName("tab-links");
+            var tabcontents = document.getElementsByClassName("tab-contents");
+        
+            function opentab(tabname){
+                for(tablink of tablinks){
+                    tablink.classList.remove("active-link");
+                }
+                for(tabcontent of tabcontents){
+                    tabcontent.classList.remove("active-tab");
+                }
+                event.currentTarget.classList.add("active-link");
+                document.getElementById(tabname).classList.add("active-tab");
+            }
+        </script>
+        <script>
+            function toggleMenu() {
+                const nav = document.querySelector('.mobile-nav');
+                nav.classList.toggle('show');
+            }
+        
+            document.addEventListener('DOMContentLoaded', () => {
+                const navLinks = document.querySelectorAll('.mobile-nav a');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        document.querySelector('.mobile-nav').classList.remove('show');
+                    });
+                });
+            });
+        </script>
+        
+    </body>
+</html>
