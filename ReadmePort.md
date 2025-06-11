@@ -16,7 +16,7 @@ Explore the culmination of my creativity, skills, and professional journey.
 This portfolio website was created using:
 - **HTML5 & CSS3**
 - **JavaScript** 
-- **Domain Host: IONOS
+- **Domain Host: IONOS**
 - **Database: Firebase** 
   
 ## How to Explore
