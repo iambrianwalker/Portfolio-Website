@@ -16,7 +16,8 @@ Explore the culmination of my creativity, skills, and professional journey.
 This portfolio website was created using:
 - **HTML5 & CSS3**
 - **JavaScript** 
-- **Domain Host: IONOS Database: Firebase** 
+- **Domain Host: IONOS**
+- **Database: Firebase** 
   
 ## How to Explore
 Visit [www.iambrianwalker.com](http://www.iambrianwalker.com) to explore the projects and get a sense of the work I do. Whether you’re here to check out my design and development capabilities, or just exploring, welcome!
