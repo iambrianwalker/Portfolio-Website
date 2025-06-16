@@ -15,21 +15,20 @@
 
     <div id="header">
         <div class="container">
-            <!-- Hamburger Icon -->
-            <button class="menu-toggle" onclick="toggleMenu()">&#9776;</button>
-    
             <!-- Navigation Menu -->
             <nav class="mobile-nav">
-                <a href="/index">About</a>
-                <a href="/projects">Projects</a>
-                <a href="#contact">Contact</a>
+                <h3>
+                    <a href="index">About</a>
+                    <a href="projects">Projects</a>
+                    <a href="#contact">Contact</a>
+                </h3>
             </nav>
     
             <!-- Header Text -->
             <div class="header-text">
                 <h1>
                     <i>Software Engineer</i>
-                    <span>Brian Walker</span>
+                    <h2><span>Brian Walker</span></h2>
                 </h1>
             </div>
         </div>
@@ -118,21 +117,6 @@
                 });
             });
 
-        </script>
-        <script>
-            function toggleMenu() {
-                const nav = document.querySelector('.mobile-nav');
-                nav.classList.toggle('show');
-            }
-        
-            document.addEventListener('DOMContentLoaded', () => {
-                const navLinks = document.querySelectorAll('.mobile-nav a');
-                navLinks.forEach(link => {
-                    link.addEventListener('click', () => {
-                        document.querySelector('.mobile-nav').classList.remove('show');
-                    });
-                });
-            });
         </script>
     </body>
 </html>
