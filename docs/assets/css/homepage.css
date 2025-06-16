@@ -27,14 +27,10 @@ nav {
 }
 
 nav a {
-    color: white;
+    color: #a50b0b;
     text-decoration: none;
     font-size: 16px;
     padding: 10px 15px;
-}
-
-.menu-toggle{
-    display: none;
 }
 
 /* Header text */
@@ -173,7 +169,7 @@ nav a {
 .btn {
     display: block;
     margin: 50px auto;
-    width: fit-content;
+    width: 60%;
     border: 1px solid #a50b0b;
     padding: 14px 50px;
     border-radius: 6px;
@@ -260,39 +256,14 @@ form .btn{
         text-align: center;
     }
 
-    /* Hamburger button (menu toggle) */
-    .menu-toggle {
-        display: block; /* show on small screens */
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        background: none;
-        border: none;
-        font-size: 28px;
-        color: red; /* change to red or any color you want */
-        z-index: 1100;
-    }
-
     /* Mobile navigation menu */
-    nav.mobile-nav {
-        display: none; /* Start hidden */
-        position: absolute;
-        top: 60px; /* Adjust to fit the header height */
-        right: 0;
-        width: 250px; /* Adjust the width as needed */
-        background-color: black;
-        flex-direction: column;
-        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-        transition: transform 0.3s ease, opacity 0.3s ease;
-        opacity: 0;
-        transform: translateX(100%); /* Start off-screen */
-    }
-
-    nav.mobile-nav.show {
+    .mobile-nav {
         display: flex;
-        opacity: 1;
-        transform: translateX(0); /* Slide in from the right */
+        color: black;
+        margin: 1rem;
+        gap: 1rem;
+        align-items: center;
+        position: relative;
     }
 
     nav a {
