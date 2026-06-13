@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width , initial-scale=1.0">
-        <meta name="description" content="This is a portfolio to display my professional skills." />
+        <meta name="description" content="This is a portfolio to display my professional skills.">
         <title>Portfolio - Contact</title>
         <link rel="stylesheet" href="/assets/css/homepage.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined">
@@ -13,28 +13,30 @@
         <link rel="apple-touch-icon" href="/assets/images/apple-icon-180x180.png">
     </head>
 
-    <div id="header">
-        <div class="container">
-            <!-- Navigation Menu -->
-            <nav class="mobile-nav">
-                <h3>
-                    <a href="index">About</a>
-                    <a href="projects">Projects</a>
-                    <a href="#contact">Contact</a>
-                </h3>
-            </nav>
     
-            <!-- Header Text -->
-            <div class="header-text">
-                <h1>
-                    <i>Software Engineer</i>
+
+    <body>
+        <div id="header">
+            <div class="container">
+                <!-- Navigation Menu -->
+                <nav class="mobile-nav">
+                    <h3>
+                        <a href="index">About</a>
+                        <a href="projects">Projects</a>
+                        <a href="#contact">Contact</a>
+                    </h3>
+                </nav>
+        
+                <!-- Header Text -->
+                <div class="header-text">
+                    <h1><i>Software Engineer</i></h1>
                     <h2><span>Brian Walker</span></h2>
-                </h1>
+                </div>
             </div>
         </div>
-    </div>
-<!-----Contact------>
-    <body>
+
+        <!--Contact-->
+
         <div id="contact">
             <div class="container">
                 <h1 class="sub-title">Contact Me</h1>
@@ -57,9 +59,11 @@
                                 <i class="fa-brands fa-linkedin"></i>
                             </a>
                         </div>
-                        <a href="/assets/resume/Resume_Template.docx" download class="btn">
-                            Download Resume
-                        </a>
+                        <div class="resume">
+                            <a href="/assets/resume/resume.docx" download class="btn">
+                                Download Resume
+                            </a>
+                        </div>
                     </div>
                     <div class="contact-right">
                         <form id="contactForm">
@@ -80,11 +84,11 @@
             import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
             // TODO: Add SDKs for Firebase products that you want to use
             // https://firebase.google.com/docs/web/setup#available-libraries
-          
+            
             // Your web app's Firebase configuration
             // For Firebase JS SDK v7.20.0 and later, measurementId is optional
             import { firebaseConfig } from '/assets/js/firebase-config.js';
-          
+            
             // Initialize Firebase
             const app = initializeApp(firebaseConfig);
             const db = getDatabase(app); // Initialize the database properly using the modular SDK

@@ -191,9 +191,11 @@ nav a {
 
 .contact-left{
     flex-basis: 35%;
+    left:0;
 }
 .contact-right{
     flex-basis: 60%;
+    right:0;
 }
 .contact-left p{
     margin-top: 30px;
@@ -276,7 +278,6 @@ form .btn{
     }
 
     .about-container {
-        display: column;
         flex-direction: column;  /* Stack elements vertically */
         align-items: center;     /* Center elements horizontally */
         text-align: center;      /* Center text inside the container */
