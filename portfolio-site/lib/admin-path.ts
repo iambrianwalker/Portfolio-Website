@@ -10,7 +10,11 @@ function normalizePath(path: string) {
 }
 
 export function getAdminBasePath() {
-  return normalizePath(process.env.ADMIN_BASE_PATH || DEFAULT_ADMIN_PATH);
+  return normalizePath(
+    process.env.ADMIN_BASE_PATH ||
+      process.env.NEXT_PUBLIC_ADMIN_BASE_PATH ||
+      DEFAULT_ADMIN_PATH
+  );
 }
 
 export function getAdminLoginPath() {
