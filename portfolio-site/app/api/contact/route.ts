@@ -105,6 +105,15 @@ ${data.message}
   } catch (error) {
     console.error("CONTACT API ERROR:", error);
 
+    let message = error instanceof Error ? error.message : "Failed to save message";
+
+    if (
+      error instanceof Error &&
+      (error.name === "ResourceNotFoundException" || message.includes("Requested resource not found"))
+    ) {
+      message = `DynamoDB table "${process.env.CONTACT_TABLE_NAME ?? "unset"}" was not found. Set CONTACT_TABLE_NAME to contact-submission in Amplify and redeploy.`;
+    }
+
     try {
       await logAppEvent("contact-submission-error", {
         message: error instanceof Error ? error.message : "Unknown error",
@@ -116,7 +125,7 @@ ${data.message}
     return NextResponse.json(
       {
         success: false,
-        message: error instanceof Error ? error.message : "Failed to save message",
+        message,
       },
       { status: 500 }
     );
