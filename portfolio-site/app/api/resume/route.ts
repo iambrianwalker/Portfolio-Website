@@ -20,8 +20,13 @@ export async function GET() {
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="${DOWNLOAD_FILE_NAME}"`,
-        "Cache-Control": "public, max-age=300",
-        ...(resume.uploadedAt ? { "Last-Modified": new Date(resume.uploadedAt).toUTCString() } : {}),
+        "Cache-Control": "private, no-cache",
+        ...(resume.uploadedAt
+          ? {
+              "Last-Modified": new Date(resume.uploadedAt).toUTCString(),
+              ETag: `"${resume.storage}-${resume.uploadedAt}"`,
+            }
+          : {}),
       },
     });
   } catch (error) {

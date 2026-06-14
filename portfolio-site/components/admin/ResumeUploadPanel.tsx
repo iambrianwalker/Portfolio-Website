@@ -106,7 +106,13 @@ export function ResumeUploadPanel() {
           </p>
         </div>
         <a
-          href={RESUME_DOWNLOAD_PATH}
+          href={
+            resume?.uploadedAt
+              ? `${RESUME_DOWNLOAD_PATH}?v=${encodeURIComponent(resume.uploadedAt)}`
+              : RESUME_DOWNLOAD_PATH
+          }
+          target="_blank"
+          rel="noreferrer"
           className="inline-flex items-center justify-center rounded-full border border-cyan-400/30 px-4 py-2 text-sm font-semibold text-cyan-300 transition hover:bg-cyan-400/10"
         >
           Preview download

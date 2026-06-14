@@ -108,8 +108,9 @@ export async function getResumeFile() {
         uploadedAt: response.LastModified?.toISOString() ?? null,
         storage: "s3" as const,
       };
-    } catch {
-      // Fall through to local file if S3 object is missing.
+    } catch (error) {
+      console.error("Failed to fetch resume from S3", error);
+      return null;
     }
   }
 

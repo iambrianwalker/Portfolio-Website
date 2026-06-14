@@ -10,6 +10,15 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.join(__dirname),
   },
+  async redirects() {
+    return [
+      {
+        source: "/resume.pdf",
+        destination: "/api/resume",
+        permanent: false,
+      },
+    ];
+  },
   serverExternalPackages: [
     "@aws-sdk/client-cloudwatch-logs",
     "@aws-sdk/client-cognito-identity-provider",
