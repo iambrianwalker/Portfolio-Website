@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { ReactNode } from "react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
-import { getAdminLoginPath, isPublicAdminPath } from "@/lib/admin-path";
+import { getAdminDashboardPath, getAdminLoginPath, isPublicAdminPath } from "@/lib/admin-path";
 
 export const metadata: Metadata = {
   robots: {
@@ -29,7 +29,10 @@ export default async function AdminLayout({ children }: { children: ReactNode })
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100">
-      <AdminHeader />
+      <AdminHeader
+        dashboardPath={getAdminDashboardPath()}
+        loginPath={getAdminLoginPath()}
+      />
       <div className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">{children}</div>
     </div>
   );

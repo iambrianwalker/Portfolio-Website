@@ -6,6 +6,7 @@ import {
   isDevPasswordFallbackEnabled,
 } from "@/lib/auth";
 import { authenticateWithCognito } from "@/lib/cognito";
+import { getAdminDashboardPath } from "@/lib/admin-path";
 import { logAppEvent } from "@/lib/cloudwatch";
 import { enforceRateLimit } from "@/lib/rate-limit";
 
@@ -45,7 +46,11 @@ export async function POST(request: Request) {
           username: usernameInput,
         });
 
-        return NextResponse.json({ success: true, method: "cognito" });
+        return NextResponse.json({
+          success: true,
+          method: "cognito",
+          redirectTo: getAdminDashboardPath(),
+        });
       }
     }
 
@@ -59,7 +64,11 @@ export async function POST(request: Request) {
         method: "password",
       });
 
-      return NextResponse.json({ success: true, method: "password" });
+      return NextResponse.json({
+        success: true,
+        method: "password",
+        redirectTo: getAdminDashboardPath(),
+      });
     }
 
     await logAppEvent("admin-login-failure", {

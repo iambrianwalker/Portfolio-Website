@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import {
-  getClientAdminDashboardPath,
-  getClientAdminLoginPath,
-} from "@/lib/admin-path";
 
-export function AdminHeader() {
+type AdminHeaderProps = {
+  dashboardPath: string;
+  loginPath: string;
+};
+
+export function AdminHeader({ dashboardPath, loginPath }: AdminHeaderProps) {
   const [loading, setLoading] = useState(false);
 
   async function handleLogout() {
@@ -15,12 +16,15 @@ export function AdminHeader() {
 
     try {
       const response = await fetch("/api/admin/logout", { method: "POST" });
+      const data = await response.json();
 
       if (!response.ok) {
         throw new Error("Logout failed");
       }
 
-      window.location.assign(getClientAdminLoginPath());
+      window.location.assign(
+        typeof data.redirectTo === "string" ? data.redirectTo : loginPath
+      );
     } catch {
       setLoading(false);
     }
@@ -45,7 +49,7 @@ export function AdminHeader() {
             View site
           </Link>
           <Link
-            href={getClientAdminDashboardPath()}
+            href={dashboardPath}
             className="rounded-full border border-cyan-400/30 px-4 py-2 text-sm font-semibold text-cyan-300 transition hover:bg-cyan-400/10"
           >
             Dashboard

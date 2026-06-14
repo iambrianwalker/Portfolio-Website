@@ -2,11 +2,9 @@
 
 import Link from "next/link";
 import { Suspense, FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
 import { getClientAdminDashboardPath } from "@/lib/admin-path";
 
 function AdminLoginForm() {
-  const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -31,8 +29,10 @@ function AdminLoginForm() {
         return;
       }
 
-      router.push(getClientAdminDashboardPath());
-      router.refresh();
+      const redirectTo =
+        typeof data.redirectTo === "string" ? data.redirectTo : getClientAdminDashboardPath();
+
+      window.location.assign(redirectTo);
     } catch {
       setError("Unable to sign in. Please try again.");
     } finally {
