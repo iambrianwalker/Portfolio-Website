@@ -1,5 +1,5 @@
 import { AnimatedSection } from "@/components/animated-section";
-import { ProjectCard } from "@/components/project-card";
+import { ProjectCardClient } from "@/components/project-card-client";
 import { SectionHeading } from "@/components/section-heading";
 import { projects } from "@/lib/content";
 
@@ -15,7 +15,7 @@ export default function ProjectsPage() {
 
         <div className="grid gap-6 lg:grid-cols-2">
           {projects.map((project) => (
-            <ProjectCard key={project.title} project={project} />
+            <ProjectCardClient key={project.title} project={project} />
           ))}
         </div>
       </AnimatedSection>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AnimatedSection } from "@/components/animated-section";
 import { SectionHeading } from "@/components/section-heading";
+import { trackPortfolioEvent } from "@/lib/analytics-client";
 
 type FormState = {
   name: string;
@@ -54,6 +55,10 @@ export default function ContactPage() {
       if (!response.ok || !data.success) {
         throw new Error(data.message || "Unable to send message.");
       }
+
+      await trackPortfolioEvent("contact-form-submission", {
+        source: "contact-page",
+      });
 
       setStatus("success");
       setMessage(data.message || "Your message has been received.");
@@ -136,7 +141,7 @@ export default function ContactPage() {
             >
               {status === "loading" ? "Sending..." : "Send message"}
             </button>
-            <p className="text-sm text-zinc-400">Mocked form submission — no AWS integration yet.</p>
+            <p className="text-sm text-zinc-400">Messages are stored securely and emailed to me.</p>
           </div>
 
           {status !== "idle" ? (

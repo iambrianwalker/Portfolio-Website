@@ -4,11 +4,11 @@ import Link from "next/link";
 import type { Project } from "@/lib/content";
 import { trackPortfolioEvent } from "@/lib/analytics-client";
 
-type ProjectCardProps = {
+type ProjectCardClientProps = {
   project: Project;
 };
 
-export function ProjectCard({ project }: ProjectCardProps) {
+export function ProjectCardClient({ project }: ProjectCardClientProps) {
   return (
     <article className="rounded-2xl border border-white/10 bg-zinc-900/70 p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.02)] backdrop-blur">
       <div className="flex items-start justify-between gap-4">
