@@ -8,6 +8,7 @@ applications:
             - npm ci
         build:
           commands:
+            - env | grep -E '^(APP_REGION|CONTACT_|ANALYTICS_|COGNITO_|ADMIN_BASE_PATH|CLOUDWATCH_|RESUME_S3_BUCKET|NEXT_PUBLIC_)=' >> .env.production || true
             - npm run build
       artifacts:
         baseDirectory: .next
