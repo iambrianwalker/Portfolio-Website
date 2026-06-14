@@ -12,7 +12,7 @@ function notFound() {
   return new NextResponse(null, { status: 404 });
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const adminBasePath = getAdminBasePath();
   const internalPath = toInternalAdminPath(pathname);
