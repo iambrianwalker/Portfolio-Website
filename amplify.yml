@@ -9,7 +9,7 @@ applications:
         build:
           commands:
             - env | grep -E '^(APP_REGION|CONTACT_|ANALYTICS_|COGNITO_|ADMIN_BASE_PATH|CLOUDWATCH_|RESUME_S3_BUCKET|NEXT_PUBLIC_)=' >> .env.production || true
-            - npm run build
+            - npm run build -- --webpack
       artifacts:
         baseDirectory: .next
         files:
