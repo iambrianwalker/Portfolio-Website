@@ -10,7 +10,7 @@ export default function SkillsPage() {
         <SectionHeading
           eyebrow="Skills"
           title="A practical toolkit for modern product development."
-          description="I enjoy working across the stack, from polished interfaces to backend services and cloud-ready architecture."
+          description="A mix of project-backed tools and CS foundations — from Flutter apps and AWS deployments to Java, Python, and Oracle."
         />
 
         <div className="grid gap-6 md:grid-cols-2">

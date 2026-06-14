@@ -9,7 +9,7 @@ export default function AboutPage() {
         <SectionHeading
           eyebrow="About"
           title="Building thoughtful products with code, clarity, and curiosity."
-          description="I’m a software developer and computer science student focused on building polished digital experiences with modern web technologies."
+          description="I’m a software developer and Computer Science Graduate from Georgia State University focused on building polished backend applications using modern web technologies."
         />
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[1.25fr_0.75fr]">

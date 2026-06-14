@@ -3,8 +3,12 @@ export type Project = {
   description: string;
   stack: string[];
   github: string;
-  demo: string;
+  demo?: string;
 };
+
+export function hasProjectDemo(project: Project) {
+  return Boolean(project.demo?.trim());
+}
 
 export type SkillGroup = {
   title: string;
@@ -22,58 +26,84 @@ export const navigation = [
 
 export const projects: Project[] = [
   {
-    title: "Habit Mastery League",
+    title: "Habit Mastery League App",
     description:
-      "A habit-tracking experience that turns daily goals into playful, motivating challenges with streaks and accountability.",
-    stack: ["React", "TypeScript", "Firebase"],
-    github: "https://github.com/your-username/habit-mastery-league",
-    demo: "https://example.com/habit-mastery-league",
+      "A gamified habit-tracking app that transforms personal growth into an engaging experience with streaks, progress tracking, achievement milestones, and an AI Habit Buddy for motivation and goal-setting.",
+    stack: ["Flutter", "Dart", "SQLite", "SharedPreferences"],
+    github: "https://github.com/iambrianwalker/project1.git",
   },
   {
-    title: "NextHaul",
+    title: "NextHaul Moving App",
     description:
-      "A logistics dashboard concept for planning shipping routes, tracking milestones, and improving last-mile delivery visibility.",
-    stack: ["Next.js", "Node.js", "MongoDB"],
-    github: "https://github.com/your-username/nexthaul",
-    demo: "https://example.com/nexthaul",
+      "A cloud-powered moving logistics platform featuring user authentication, booking management, real-time messaging, and move status tracking, built with Flutter and AWS serverless technologies.",
+    stack: ["Flutter", "Dart", "AWS Amplify", "DynamoDB", "AWS Cognito"],
+    github: "https://github.com/iambrianwalker/NextHaul-Move-App.git",
   },
   {
-    title: "Personal Finance Tracker",
+    title: "FocusNFlow App",
     description:
-      "A clean budgeting interface for monitoring expenses, setting savings goals, and understanding spending patterns over time.",
-    stack: ["Flutter", "Dart", "Firebase"],
-    github: "https://github.com/your-username/finance-tracker",
-    demo: "https://example.com/finance-tracker",
+      "A study organization platform that streamlines academic planning through intelligent scheduling, collaborative study groups, real-time chat, study space management, and personalized task prioritization.",
+    stack: ["Flutter", "Firebase", "Cloud Firestore", "Firebase Authentication"],
+    github: "https://github.com/Albonation/Project2_FocusNFlow.git",
   },
   {
     title: "Portfolio Website",
     description:
       "A polished personal site designed to showcase development work, technical interests, and a modern professional presence.",
-    stack: ["Next.js", "Tailwind CSS", "Framer Motion"],
-    github: "https://github.com/your-username/portfolio-website",
-    demo: "https://example.com/portfolio-website",
+    stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "AWS Amplify", "DynamoDB"],
+    github: "https://github.com/iambrianwalker/Portfolio-Website.git",
+  },
+  {
+    title: "YesterYear Website",
+    description:
+      "A website for a local music enthusiast to promote upcoming artists in the Atlanta area.",
+    stack: ["HTML", "CSS", "JavaScript"],
+    github: "https://github.com/iambrianwalker/yesteryear.git",
+  },
+  {
+    title: "PetPal Website",
+    description:
+      "A full-stack pet management platform that enables users to manage pet profiles, access pet care resources, and interact with pet-related services using a database-driven web application.",
+    stack: ["PHP", "HTML", "CSS", "JavaScript", "MySQL"],
+    github: "https://github.com/malclifton/PetPal.git",
   },
 ];
 
 export const skillGroups: SkillGroup[] = [
   {
-    title: "Frontend",
-    description: "Designing polished interfaces and product experiences with modern web tools.",
-    skills: ["React", "Next.js", "Tailwind CSS", "Flutter"],
+    title: "Mobile Development",
+    description:
+      "Cross-platform apps with Flutter — habit tracking, logistics, and study planning with local and cloud-backed data.",
+    skills: ["Flutter", "Dart", "SQLite", "SharedPreferences"],
   },
   {
-    title: "Backend",
-    description: "Building reliable services, APIs, and data workflows that support real products.",
-    skills: ["Node.js", "REST APIs", "Firebase", "Auth flows"],
+    title: "Web Development",
+    description:
+      "Modern portfolio sites and front-end experiences built with responsive layouts and polished UI motion.",
+    skills: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "HTML", "CSS", "JavaScript"],
   },
   {
-    title: "Languages",
-    description: "Comfortable across tools that power both product and systems-level work.",
-    skills: ["Python", "Java", "JavaScript", "TypeScript", "SQL"],
+    title: "Backend & Databases",
+    description:
+      "Full-stack and database-driven apps with real-time data, auth, and server-side logic across Firebase and SQL stacks.",
+    skills: ["Firebase", "Cloud Firestore", "Firebase Authentication", "PHP", "MySQL", "REST APIs"],
   },
   {
-    title: "Cloud",
-    description: "Preparing for scalable deployment and operational workflows on AWS.",
-    skills: ["AWS basics", "Amplify", "DynamoDB", "SES"],
+    title: "Cloud & AWS",
+    description:
+      "Serverless deployment, authentication, storage, and notifications — used in NextHaul and this portfolio site.",
+    skills: ["AWS Amplify", "AWS Cognito", "DynamoDB", "Amazon SES"],
+  },
+  {
+    title: "Programming Languages",
+    description:
+      "Core languages from CS coursework and applied development across web, mobile, and systems projects.",
+    skills: ["Java", "Python", "C++"],
+  },
+  {
+    title: "Enterprise & Infrastructure",
+    description:
+      "Relational databases and virtualized lab environments from academic and hands-on systems work.",
+    skills: ["Oracle", "SQL", "Virtual Machines"],
   },
 ];

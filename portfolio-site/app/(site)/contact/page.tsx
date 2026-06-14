@@ -9,6 +9,7 @@ type FormState = {
   email: string;
   subject: string;
   message: string;
+  company: string;
 };
 
 const initialState: FormState = {
@@ -16,6 +17,7 @@ const initialState: FormState = {
   email: "",
   subject: "",
   message: "",
+  company: "",
 };
 
 export default function ContactPage() {
@@ -75,12 +77,22 @@ export default function ContactPage() {
           />
           <div className="rounded-2xl border border-cyan-400/20 bg-cyan-500/10 p-6 text-sm leading-7 text-zinc-300">
             <p className="font-medium text-zinc-100">Availability</p>
-            <p className="mt-2">Open to freelance work, internships, and collaborative builds.</p>
+            <p className="mt-2">Open to freelance work, full time positions, and collaborative projects.</p>
             <p className="mt-3">Response time is usually within 2–3 business days.</p>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-white/10 bg-zinc-900/70 p-6">
+          <input
+            type="text"
+            name="company"
+            value={form.company}
+            onChange={handleChange}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            className="hidden"
+          />
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="text-sm text-zinc-300">
               <span className="mb-2 block">Name</span>
@@ -136,7 +148,7 @@ export default function ContactPage() {
             >
               {status === "loading" ? "Sending..." : "Send message"}
             </button>
-            <p className="text-sm text-zinc-400">Mocked form submission — no AWS integration yet.</p>
+            <p className="text-sm text-zinc-400">Messages are stored securely and emailed to me.</p>
           </div>
 
           {status !== "idle" ? (

@@ -5,6 +5,9 @@ import { dynamo } from "@/lib/dynamodb";
 import { randomUUID } from "crypto";
 import { SendEmailCommand } from "@aws-sdk/client-sesv2";
 import { ses } from "@/lib/ses";
+import { recordAnalyticsEvent } from "@/lib/analytics";
+import { logAppEvent } from "@/lib/cloudwatch";
+import { enforceRateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -13,13 +16,26 @@ const schema = z.object({
   email: z.string().email(),
   subject: z.string().optional(),
   message: z.string().min(1),
+  company: z.string().optional(),
 });
 
 export async function POST(request: Request) {
+  const rateLimitResponse = enforceRateLimit(request, "contact", 5, 15 * 60 * 1000);
+
+  if (rateLimitResponse) {
+    return rateLimitResponse;
+  }
+
   try {
-    console.log("ENV TABLE:", process.env.CONTACT_TABLE_NAME);
     const body = await request.json();
     const data = schema.parse(body);
+
+    if (data.company?.trim()) {
+      return NextResponse.json({
+        success: true,
+        message: "Your message has been received.",
+      });
+    }
 
     const item = {
       id: randomUUID(),
@@ -51,11 +67,11 @@ export async function POST(request: Request) {
             Body: {
               Text: {
                 Data: `
-    Name: ${data.name}
-    Email: ${data.email}
+Name: ${data.name}
+Email: ${data.email}
 
-    Message:
-    ${data.message}
+Message:
+${data.message}
                 `,
               },
             },
@@ -64,17 +80,43 @@ export async function POST(request: Request) {
       })
     );
 
+    try {
+      await recordAnalyticsEvent("contact-form-submission", {
+        email: data.email,
+        subject: data.subject || "",
+      });
+    } catch (analyticsError) {
+      console.warn("Analytics tracking failed:", analyticsError);
+    }
+
+    try {
+      await logAppEvent("contact-submission", {
+        submissionId: item.id,
+        email: data.email,
+      });
+    } catch (loggingError) {
+      console.warn("CloudWatch logging failed:", loggingError);
+    }
+
     return NextResponse.json({
       success: true,
-      message: "Message saved to DynamoDB",
+      message: "Your message has been received.",
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("CONTACT API ERROR:", error);
+
+    try {
+      await logAppEvent("contact-submission-error", {
+        message: error instanceof Error ? error.message : "Unknown error",
+      });
+    } catch {
+      // Ignore logging failures.
+    }
 
     return NextResponse.json(
       {
         success: false,
-        message: error.message || "Failed to save message",
+        message: error instanceof Error ? error.message : "Failed to save message",
       },
       { status: 500 }
     );
