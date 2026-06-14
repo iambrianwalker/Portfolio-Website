@@ -4,6 +4,24 @@ import { useEffect, useState } from "react";
 import type { ResumeMetadata } from "@/types/admin";
 import { MAX_RESUME_BYTES, RESUME_DOWNLOAD_PATH } from "@/types/admin";
 
+async function readApiResponse(response: Response) {
+  const text = await response.text();
+
+  if (!text) {
+    throw new Error(response.ok ? "Empty response from server." : `Request failed (${response.status}).`);
+  }
+
+  try {
+    return JSON.parse(text) as { success?: boolean; message?: string; resume?: ResumeMetadata };
+  } catch {
+    throw new Error(
+      response.ok
+        ? "Unexpected response from server."
+        : text.slice(0, 200) || `Request failed (${response.status}).`
+    );
+  }
+}
+
 function formatFileSize(bytes: number) {
   if (bytes <= 0) {
     return "No file uploaded";
@@ -29,13 +47,13 @@ export function ResumeUploadPanel() {
 
     try {
       const response = await fetch("/api/admin/resume");
-      const data = await response.json();
+      const data = await readApiResponse(response);
 
       if (!response.ok) {
         throw new Error(data.message || "Unable to load resume details.");
       }
 
-      setResume(data.resume);
+      setResume(data.resume ?? null);
     } catch (loadError) {
       setError(loadError instanceof Error ? loadError.message : "Unable to load resume details.");
     } finally {
@@ -62,13 +80,13 @@ export function ResumeUploadPanel() {
         body: formData,
       });
 
-      const data = await response.json();
+      const data = await readApiResponse(response);
 
       if (!response.ok) {
         throw new Error(data.message || "Unable to upload resume.");
       }
 
-      setResume(data.resume);
+      setResume(data.resume ?? null);
       setMessage(data.message || "Resume uploaded successfully.");
       form.reset();
     } catch (uploadError) {

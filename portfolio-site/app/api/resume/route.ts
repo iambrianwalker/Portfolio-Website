@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { DOWNLOAD_FILE_NAME, getResumeFile } from "@/lib/resume";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
@@ -14,7 +15,7 @@ export async function GET() {
       );
     }
 
-    return new NextResponse(new Uint8Array(resume.buffer), {
+    return new Response(new Uint8Array(resume.buffer), {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",

@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/auth";
 import { logAppEvent } from "@/lib/cloudwatch";
-import { getResumeMetadata, uploadResume } from "@/lib/resume";
+import { getResumeMetadata, uploadResume, buildResumeMetadataFromUpload } from "@/lib/resume";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
@@ -51,7 +52,7 @@ export async function POST(request: Request) {
     }
 
     const uploaded = await uploadResume(file);
-    const resume = await getResumeMetadata();
+    const resume = buildResumeMetadataFromUpload(uploaded);
 
     await logAppEvent("admin-resume-upload", {
       sizeBytes: uploaded.sizeBytes,
@@ -65,12 +66,9 @@ export async function POST(request: Request) {
       resume,
     });
   } catch (error) {
-    return NextResponse.json(
-      {
-        success: false,
-        message: error instanceof Error ? error.message : "Failed to upload resume",
-      },
-      { status: 400 }
-    );
+    const message = error instanceof Error ? error.message : "Failed to upload resume";
+    const status = message.includes("Permission") || message.includes("not authorized") ? 500 : 400;
+
+    return NextResponse.json({ success: false, message }, { status });
   }
 }

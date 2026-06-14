@@ -10,6 +10,14 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.join(__dirname),
   },
+  serverExternalPackages: [
+    "@aws-sdk/client-cloudwatch-logs",
+    "@aws-sdk/client-cognito-identity-provider",
+    "@aws-sdk/client-dynamodb",
+    "@aws-sdk/client-s3",
+    "@aws-sdk/client-sesv2",
+    "@aws-sdk/lib-dynamodb",
+  ],
   env: {
     APP_REGION: process.env.APP_REGION,
     CONTACT_TABLE_NAME: process.env.CONTACT_TABLE_NAME,

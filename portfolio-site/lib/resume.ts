@@ -146,19 +146,26 @@ export async function uploadResume(file: File) {
   const uploadedAt = new Date().toISOString();
 
   if (usesS3Storage()) {
-    await s3Client!.send(
-      new PutObjectCommand({
-        Bucket: getResumeBucketName(),
-        Key: RESUME_S3_KEY,
-        Body: buffer,
-        ContentType: "application/pdf",
-        ContentDisposition: `attachment; filename="${DOWNLOAD_FILE_NAME}"`,
-        Metadata: {
-          originalfilename: file.name,
-          uploadedat: uploadedAt,
-        },
-      })
-    );
+    try {
+      await s3Client!.send(
+        new PutObjectCommand({
+          Bucket: getResumeBucketName(),
+          Key: RESUME_S3_KEY,
+          Body: buffer,
+          ContentType: "application/pdf",
+          ContentDisposition: `attachment; filename="${DOWNLOAD_FILE_NAME}"`,
+          Metadata: {
+            originalfilename: file.name,
+            uploadedat: uploadedAt,
+          },
+        })
+      );
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "S3 upload failed";
+      throw new Error(
+        `Unable to upload resume to S3 (${getResumeBucketName()}). Check compute role s3:PutObject permission. ${message}`
+      );
+    }
 
     return {
       fileName: DOWNLOAD_FILE_NAME,
@@ -180,3 +187,17 @@ export async function uploadResume(file: File) {
 }
 
 export { DOWNLOAD_FILE_NAME, MAX_RESUME_BYTES };
+
+export function buildResumeMetadataFromUpload(uploaded: {
+  uploadedAt: string;
+  sizeBytes: number;
+  storage: "s3" | "local";
+}): ResumeMetadata {
+  return {
+    fileName: DOWNLOAD_FILE_NAME,
+    uploadedAt: uploaded.uploadedAt,
+    sizeBytes: uploaded.sizeBytes,
+    storage: uploaded.storage,
+    downloadPath: getResumeDownloadPath(),
+  };
+}
