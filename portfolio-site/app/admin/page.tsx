@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AnalyticsCharts } from "@/components/admin/AnalyticsCharts";
 import { MessagesTable } from "@/components/admin/MessagesTable";
+import { ResumeUploadPanel } from "@/components/admin/ResumeUploadPanel";
 import { StatCard } from "@/components/admin/StatCard";
 import { getAdminStats, getContactSubmissions } from "@/lib/admin";
 import { getAdminDashboardPath } from "@/lib/admin-path";
@@ -64,6 +65,8 @@ export default async function AdminPage() {
           description="Most recent contact form entry"
         />
       </section>
+
+      <ResumeUploadPanel />
 
       <section className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
         <MessagesTable submissions={submissions} />

@@ -56,6 +56,17 @@ export interface AnalyticsChartData {
   dailySeries: AnalyticsDailyPoint[];
 }
 
+export interface ResumeMetadata {
+  fileName: string;
+  uploadedAt: string | null;
+  sizeBytes: number;
+  storage: "s3" | "local" | "none";
+  downloadPath: string;
+}
+
+export const RESUME_DOWNLOAD_PATH = "/api/resume";
+export const MAX_RESUME_BYTES = 5 * 1024 * 1024;
+
 export const ANALYTICS_EVENT_LABELS: Record<AnalyticsEventType, string> = {
   "page-view": "Page views",
   "resume-download": "Resume downloads",

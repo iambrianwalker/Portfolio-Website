@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import type { Project } from "@/lib/content";
+import { hasProjectDemo } from "@/lib/content";
 import { trackPortfolioEvent } from "@/lib/analytics-client";
 
 type ProjectCardProps = {
@@ -40,13 +41,15 @@ export function ProjectCard({ project }: ProjectCardProps) {
         >
           GitHub
         </Link>
-        <Link
-          href={project.demo}
-          onClick={() => void trackPortfolioEvent("project-click", { path: project.demo })}
-          className="rounded-full bg-cyan-500 px-4 py-2 text-sm font-medium text-zinc-950 transition hover:bg-cyan-400"
-        >
-          Live Demo
-        </Link>
+        {hasProjectDemo(project) ? (
+          <Link
+            href={project.demo!}
+            onClick={() => void trackPortfolioEvent("project-click", { path: project.demo! })}
+            className="rounded-full bg-cyan-500 px-4 py-2 text-sm font-medium text-zinc-950 transition hover:bg-cyan-400"
+          >
+            Live Demo
+          </Link>
+        ) : null}
       </div>
     </article>
   );

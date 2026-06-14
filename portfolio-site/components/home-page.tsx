@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { AnimatedSection } from "@/components/animated-section";
 import { trackPortfolioEvent } from "@/lib/analytics-client";
+import { RESUME_DOWNLOAD_PATH } from "@/types/admin";
 
 export function HomePage() {
   return (
@@ -10,17 +11,17 @@ export function HomePage() {
       <AnimatedSection className="grid flex-1 items-center gap-10 rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top_left,_rgba(34,211,238,0.12),_transparent_30%),linear-gradient(135deg,_rgba(24,24,27,0.95),_rgba(9,9,11,0.98))] px-6 py-16 shadow-2xl shadow-cyan-950/20 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:px-12 lg:py-20">
         <div className="max-w-2xl space-y-8">
           <div className="inline-flex rounded-full border border-cyan-400/30 bg-cyan-400/10 px-3 py-1 text-sm font-medium text-cyan-300">
-            Available for new projects and collaborations
+            Available for new projects and full time positions
           </div>
           <div className="space-y-4">
             <h1 className="text-4xl font-semibold tracking-tight text-zinc-50 sm:text-5xl lg:text-6xl">
               Brian Walker
             </h1>
             <p className="text-xl font-medium text-cyan-400 sm:text-2xl">
-              Software Developer | CS Student | AWS Enthusiast
+              Software Developer | Mobile & Web Developer | AWS Enthusiast
             </p>
             <p className="max-w-xl text-lg leading-8 text-zinc-400">
-              I build thoughtful digital products with modern web tools and a strong focus on clean user experiences.
+              I build thoughtful digital products with modern web tools and a strong focus on clean backend and frontend experiences.
             </p>
           </div>
 
@@ -39,9 +40,8 @@ export function HomePage() {
               Contact Me
             </Link>
             <a
-              href="/resume.pdf"
-              download
-              onClick={() => void trackPortfolioEvent("resume-download", { path: "/resume.pdf" })}
+              href={RESUME_DOWNLOAD_PATH}
+              onClick={() => void trackPortfolioEvent("resume-download", { path: RESUME_DOWNLOAD_PATH })}
               className="rounded-full border border-cyan-400/30 px-5 py-3 text-sm font-semibold text-cyan-300 transition hover:bg-cyan-400/10"
             >
               Download Resume

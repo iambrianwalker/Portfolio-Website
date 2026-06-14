@@ -77,7 +77,7 @@ export default function ContactPage() {
           />
           <div className="rounded-2xl border border-cyan-400/20 bg-cyan-500/10 p-6 text-sm leading-7 text-zinc-300">
             <p className="font-medium text-zinc-100">Availability</p>
-            <p className="mt-2">Open to freelance work, internships, and collaborative builds.</p>
+            <p className="mt-2">Open to freelance work, full time positions, and collaborative projects.</p>
             <p className="mt-3">Response time is usually within 2–3 business days.</p>
           </div>
         </div>

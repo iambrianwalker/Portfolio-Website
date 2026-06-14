@@ -1,0 +1,150 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import type { ResumeMetadata } from "@/types/admin";
+import { MAX_RESUME_BYTES, RESUME_DOWNLOAD_PATH } from "@/types/admin";
+
+function formatFileSize(bytes: number) {
+  if (bytes <= 0) {
+    return "No file uploaded";
+  }
+
+  if (bytes < 1024 * 1024) {
+    return `${(bytes / 1024).toFixed(1)} KB`;
+  }
+
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+export function ResumeUploadPanel() {
+  const [resume, setResume] = useState<ResumeMetadata | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+
+  async function loadResume() {
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/admin/resume");
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Unable to load resume details.");
+      }
+
+      setResume(data.resume);
+    } catch (loadError) {
+      setError(loadError instanceof Error ? loadError.message : "Unable to load resume details.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    void loadResume();
+  }, []);
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setUploading(true);
+    setMessage("");
+    setError("");
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch("/api/admin/resume", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Unable to upload resume.");
+      }
+
+      setResume(data.resume);
+      setMessage(data.message || "Resume uploaded successfully.");
+      form.reset();
+    } catch (uploadError) {
+      setError(uploadError instanceof Error ? uploadError.message : "Unable to upload resume.");
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  return (
+    <div className="rounded-2xl border border-white/10 bg-zinc-900/80 p-5 shadow-lg shadow-black/20">
+      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div>
+          <h2 className="text-xl font-semibold text-white">Resume management</h2>
+          <p className="mt-1 text-sm text-zinc-400">
+            Upload a fresh PDF resume for the public Download Resume button.
+          </p>
+        </div>
+        <a
+          href={RESUME_DOWNLOAD_PATH}
+          className="inline-flex items-center justify-center rounded-full border border-cyan-400/30 px-4 py-2 text-sm font-semibold text-cyan-300 transition hover:bg-cyan-400/10"
+        >
+          Preview download
+        </a>
+      </div>
+
+      <div className="mt-5 grid gap-4 md:grid-cols-3">
+        <div className="rounded-2xl border border-white/10 bg-zinc-950/70 p-4">
+          <p className="text-sm text-zinc-400">Current file</p>
+          <p className="mt-2 font-medium text-white">
+            {loading ? "Loading..." : resume?.storage === "none" ? "No resume uploaded" : resume?.fileName}
+          </p>
+        </div>
+        <div className="rounded-2xl border border-white/10 bg-zinc-950/70 p-4">
+          <p className="text-sm text-zinc-400">Last updated</p>
+          <p className="mt-2 font-medium text-white">
+            {loading || !resume?.uploadedAt
+              ? "—"
+              : new Date(resume.uploadedAt).toLocaleString()}
+          </p>
+        </div>
+        <div className="rounded-2xl border border-white/10 bg-zinc-950/70 p-4">
+          <p className="text-sm text-zinc-400">Storage</p>
+          <p className="mt-2 font-medium text-white">
+            {loading
+              ? "—"
+              : resume?.storage === "none"
+                ? "Not available"
+                : `${formatFileSize(resume?.sizeBytes ?? 0)} · ${resume?.storage.toUpperCase()}`}
+          </p>
+        </div>
+      </div>
+
+      <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+        <label className="block text-sm text-zinc-300">
+          Upload new resume (PDF, max {Math.round(MAX_RESUME_BYTES / (1024 * 1024))} MB)
+          <input
+            type="file"
+            name="resume"
+            accept="application/pdf,.pdf"
+            required
+            className="mt-2 block w-full rounded-2xl border border-white/10 bg-zinc-950/70 px-4 py-3 text-sm text-zinc-100 file:mr-4 file:rounded-full file:border-0 file:bg-cyan-500 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-zinc-950"
+          />
+        </label>
+
+        <button
+          type="submit"
+          disabled={uploading}
+          className="rounded-full bg-cyan-500 px-5 py-3 text-sm font-semibold text-zinc-950 transition hover:bg-cyan-400 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {uploading ? "Uploading..." : "Upload resume"}
+        </button>
+      </form>
+
+      {message ? <p className="mt-4 text-sm text-emerald-300">{message}</p> : null}
+      {error ? <p className="mt-4 text-sm text-rose-400">{error}</p> : null}
+    </div>
+  );
+}
