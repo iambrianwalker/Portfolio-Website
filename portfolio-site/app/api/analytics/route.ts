@@ -5,6 +5,7 @@ import {
   getAnalyticsSummary,
   recordAnalyticsEvent,
 } from "@/lib/analytics";
+import { enforceRateLimit } from "@/lib/rate-limit";
 import type { AnalyticsEventType } from "@/types/admin";
 
 export const runtime = "nodejs";
@@ -49,6 +50,12 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const rateLimitResponse = enforceRateLimit(request, "analytics", 60, 60 * 1000);
+
+  if (rateLimitResponse) {
+    return rateLimitResponse;
+  }
+
   try {
     const body = await request.json();
     const eventType = body?.eventType;

@@ -1,15 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
 import { AnimatedSection } from "@/components/animated-section";
 import { trackPortfolioEvent } from "@/lib/analytics-client";
 
 export function HomePage() {
-  useEffect(() => {
-    void trackPortfolioEvent("page-view", { path: "/" });
-  }, []);
-
   return (
     <main className="flex flex-1 flex-col">
       <AnimatedSection className="grid flex-1 items-center gap-10 rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top_left,_rgba(34,211,238,0.12),_transparent_30%),linear-gradient(135deg,_rgba(24,24,27,0.95),_rgba(9,9,11,0.98))] px-6 py-16 shadow-2xl shadow-cyan-950/20 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:px-12 lg:py-20">

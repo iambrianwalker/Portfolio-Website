@@ -20,6 +20,7 @@ export type AnalyticsEventType =
   | "contact-form-submission";
 
 export interface AnalyticsEvent {
+  timestamp: string;
   id: string;
   eventType: AnalyticsEventType;
   createdAt: string;

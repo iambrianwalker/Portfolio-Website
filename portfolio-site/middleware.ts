@@ -17,7 +17,6 @@ export function middleware(request: NextRequest) {
   const adminBasePath = getAdminBasePath();
   const internalPath = toInternalAdminPath(pathname);
   const isLoginRoute = internalPath === "/admin/login";
-  const isLogoutRoute = internalPath === "/admin/logout";
   const isAdminRoute =
     internalPath.startsWith("/admin") &&
     internalPath !== "/admin/login" &&

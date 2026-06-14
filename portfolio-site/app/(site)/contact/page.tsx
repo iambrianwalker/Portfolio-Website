@@ -3,13 +3,13 @@
 import { useState } from "react";
 import { AnimatedSection } from "@/components/animated-section";
 import { SectionHeading } from "@/components/section-heading";
-import { trackPortfolioEvent } from "@/lib/analytics-client";
 
 type FormState = {
   name: string;
   email: string;
   subject: string;
   message: string;
+  company: string;
 };
 
 const initialState: FormState = {
@@ -17,6 +17,7 @@ const initialState: FormState = {
   email: "",
   subject: "",
   message: "",
+  company: "",
 };
 
 export default function ContactPage() {
@@ -56,10 +57,6 @@ export default function ContactPage() {
         throw new Error(data.message || "Unable to send message.");
       }
 
-      await trackPortfolioEvent("contact-form-submission", {
-        source: "contact-page",
-      });
-
       setStatus("success");
       setMessage(data.message || "Your message has been received.");
       setForm(initialState);
@@ -86,6 +83,16 @@ export default function ContactPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-white/10 bg-zinc-900/70 p-6">
+          <input
+            type="text"
+            name="company"
+            value={form.company}
+            onChange={handleChange}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            className="hidden"
+          />
           <div className="grid gap-4 sm:grid-cols-2">
             <label className="text-sm text-zinc-300">
               <span className="mb-2 block">Name</span>

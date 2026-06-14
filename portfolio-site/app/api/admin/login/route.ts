@@ -1,12 +1,23 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { getAdminAuthCookieOptions, isAdminAuthenticated } from "@/lib/auth";
+import {
+  getAdminAuthCookieOptions,
+  isAdminAuthenticated,
+  isDevPasswordFallbackEnabled,
+} from "@/lib/auth";
 import { authenticateWithCognito } from "@/lib/cognito";
 import { logAppEvent } from "@/lib/cloudwatch";
+import { enforceRateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
 export async function POST(request: Request) {
+  const rateLimitResponse = enforceRateLimit(request, "admin-login", 10, 15 * 60 * 1000);
+
+  if (rateLimitResponse) {
+    return rateLimitResponse;
+  }
+
   try {
     const body = await request.json();
     const password = typeof body?.password === "string" ? body.password : "";
@@ -23,7 +34,6 @@ export async function POST(request: Request) {
     const cookieStore = await cookies();
     const cookieOptions = getAdminAuthCookieOptions();
 
-    // Only try Cognito when a username is entered — leave blank for fallback password.
     if (usernameInput) {
       const cognitoResult = await authenticateWithCognito(usernameInput, password);
 
@@ -40,9 +50,9 @@ export async function POST(request: Request) {
     }
 
     const passwordMatches =
-      Boolean(process.env.ADMIN_PASSWORD) && password === process.env.ADMIN_PASSWORD;
+      isDevPasswordFallbackEnabled() && password === process.env.ADMIN_PASSWORD;
 
-    if (passwordMatches) {
+    if (passwordMatches && !usernameInput) {
       cookieStore.set("admin-auth", "password", cookieOptions);
 
       await logAppEvent("admin-login-success", {
@@ -53,7 +63,7 @@ export async function POST(request: Request) {
     }
 
     await logAppEvent("admin-login-failure", {
-      username: usernameInput || "fallback",
+      username: usernameInput || "unknown",
     });
 
     return NextResponse.json(
@@ -61,7 +71,7 @@ export async function POST(request: Request) {
         success: false,
         message: usernameInput
           ? "Invalid username or password"
-          : "Invalid admin password",
+          : "Username is required",
       },
       { status: 401 }
     );

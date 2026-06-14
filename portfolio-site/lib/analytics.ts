@@ -29,6 +29,10 @@ function getAnalyticsTableName() {
   return ANALYTICS_TABLE;
 }
 
+function getEventDate(event: AnalyticsEvent) {
+  return event.createdAt || event.timestamp;
+}
+
 async function fetchAnalyticsEvents(): Promise<AnalyticsEvent[]> {
   const result = await dynamo.send(
     new ScanCommand({
@@ -62,7 +66,7 @@ function buildDailySeries(events: AnalyticsEvent[], days = 30): AnalyticsDailyPo
   }
 
   for (const event of events) {
-    const key = event.createdAt.slice(0, 10);
+    const key = getEventDate(event).slice(0, 10);
     const bucket = buckets.get(key);
 
     if (!bucket) {
@@ -110,10 +114,13 @@ export async function recordAnalyticsEvent(
   eventType: AnalyticsEventType,
   metadata?: Record<string, unknown>
 ) {
+  const id = randomUUID();
+  const createdAt = new Date().toISOString();
   const item: AnalyticsEvent = {
-    id: randomUUID(),
+    timestamp: `${createdAt}#${id}`,
+    id,
     eventType,
-    createdAt: new Date().toISOString(),
+    createdAt,
     metadata,
   };
 
@@ -132,6 +139,18 @@ export async function recordAnalyticsEvent(
   return item;
 }
 
+function getLatestEventDate(events: AnalyticsEvent[]) {
+  if (!events.length) {
+    return null;
+  }
+
+  const latest = [...events].sort(
+    (a, b) => new Date(getEventDate(b)).getTime() - new Date(getEventDate(a)).getTime()
+  )[0];
+
+  return latest ? getEventDate(latest) : null;
+}
+
 export async function getAnalyticsSummary(): Promise<AnalyticsSummary> {
   const events = await fetchAnalyticsEvents();
   const byType = events.reduce<Record<string, number>>((accumulator, event) => {
@@ -139,16 +158,10 @@ export async function getAnalyticsSummary(): Promise<AnalyticsSummary> {
     return accumulator;
   }, {});
 
-  const latestEventDate = events.length
-    ? events.sort((a, b) => {
-        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-      })[0]?.createdAt ?? null
-    : null;
-
   return {
     totalEvents: events.length,
     byType,
-    latestEventDate,
+    latestEventDate: getLatestEventDate(events),
   };
 }
 
@@ -171,15 +184,9 @@ async function getAnalyticsSummaryFromEvents(
     return accumulator;
   }, {});
 
-  const latestEventDate = events.length
-    ? events.sort((a, b) => {
-        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-      })[0]?.createdAt ?? null
-    : null;
-
   return {
     totalEvents: events.length,
     byType,
-    latestEventDate,
+    latestEventDate: getLatestEventDate(events),
   };
 }

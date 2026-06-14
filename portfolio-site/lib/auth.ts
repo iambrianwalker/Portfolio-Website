@@ -1,6 +1,10 @@
 import { cookies } from "next/headers";
 import { validateCognitoToken } from "@/lib/cognito";
 
+export function isDevPasswordFallbackEnabled() {
+  return process.env.NODE_ENV !== "production" && Boolean(process.env.ADMIN_PASSWORD);
+}
+
 export async function isAdminAuthenticated(): Promise<boolean> {
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get("admin-auth")?.value;
@@ -10,7 +14,7 @@ export async function isAdminAuthenticated(): Promise<boolean> {
   }
 
   if (sessionCookie === "password") {
-    return true;
+    return isDevPasswordFallbackEnabled();
   }
 
   return validateCognitoToken(sessionCookie);

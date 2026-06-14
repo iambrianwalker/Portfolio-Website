@@ -55,8 +55,10 @@ function AdminLoginForm() {
       </div>
       <h1 className="text-3xl font-semibold text-white">Sign in</h1>
       <p className="mt-3 text-sm leading-7 text-zinc-400">
-        Leave username blank and enter your admin password to sign in. Or use your Cognito
-        username and password.
+        Sign in with your Cognito admin username and password.
+        {process.env.NODE_ENV === "development"
+          ? " In local development, you can also leave username blank and use ADMIN_PASSWORD from .env.local."
+          : null}
       </p>
 
       <form onSubmit={handleSubmit} className="mt-8 space-y-4">
@@ -68,7 +70,8 @@ function AdminLoginForm() {
             onChange={(event) => setUsername(event.target.value)}
             autoComplete="username"
             className="mt-2 w-full rounded-2xl border border-white/10 bg-zinc-950/70 px-4 py-3 text-white outline-none transition focus:border-cyan-400/50"
-            placeholder="Optional — leave blank for fallback login"
+            placeholder="admin"
+            required={process.env.NODE_ENV === "production"}
           />
         </label>
 
