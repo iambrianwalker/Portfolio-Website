@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { AnalyticsCharts } from "@/components/admin/AnalyticsCharts";
 import { MessagesTable } from "@/components/admin/MessagesTable";
 import { ResumeUploadPanel } from "@/components/admin/ResumeUploadPanel";
+import { LocalDateTime } from "@/components/admin/local-date-time";
 import { StatCard } from "@/components/admin/StatCard";
 import { getAdminStats, getContactSubmissions } from "@/lib/admin";
 import { getAdminDashboardPath } from "@/lib/admin-path";
@@ -30,9 +31,6 @@ export default async function AdminPage() {
   });
 
   const stats = getAdminStats(submissions);
-  const latestSubmission = stats.latestSubmissionDate
-    ? new Date(stats.latestSubmissionDate).toLocaleString()
-    : "No submissions yet";
 
   return (
     <main className="flex flex-col gap-8">
@@ -61,7 +59,13 @@ export default async function AdminPage() {
         />
         <StatCard
           title="Latest submission"
-          value={latestSubmission}
+          value={
+            <LocalDateTime
+              value={stats.latestSubmissionDate}
+              fallback="No submissions yet"
+              options={{ dateStyle: "medium", timeStyle: "short" }}
+            />
+          }
           description="Most recent contact form entry"
         />
       </section>
