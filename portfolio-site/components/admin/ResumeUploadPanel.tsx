@@ -11,8 +11,22 @@ async function readApiResponse(response: Response) {
     throw new Error(response.ok ? "Empty response from server." : `Request failed (${response.status}).`);
   }
 
+  const trimmed = text.trimStart();
+  if (trimmed.startsWith("<!DOCTYPE") || trimmed.startsWith("<HTML") || trimmed.startsWith("<html")) {
+    throw new Error(
+      "Upload failed because the server returned an HTML error page. On Amplify, use direct S3 upload (redeploy if this persists)."
+    );
+  }
+
   try {
-    return JSON.parse(text) as { success?: boolean; message?: string; resume?: ResumeMetadata };
+    return JSON.parse(text) as {
+      success?: boolean;
+      message?: string;
+      resume?: ResumeMetadata;
+      mode?: "presigned" | "multipart";
+      uploadUrl?: string;
+      contentType?: string;
+    };
   } catch {
     throw new Error(
       response.ok
@@ -20,6 +34,81 @@ async function readApiResponse(response: Response) {
         : text.slice(0, 200) || `Request failed (${response.status}).`
     );
   }
+}
+
+async function uploadResumeFile(file: File) {
+  const presignResponse = await fetch("/api/admin/resume", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      action: "presign",
+      fileName: file.name,
+      fileSize: file.size,
+      contentType: file.type || "application/pdf",
+    }),
+  });
+
+  const presignData = await readApiResponse(presignResponse);
+
+  if (!presignResponse.ok) {
+    throw new Error(presignData.message || "Unable to prepare resume upload.");
+  }
+
+  if (presignData.mode === "presigned" && presignData.uploadUrl) {
+    let putResponse: Response;
+
+    try {
+      putResponse = await fetch(presignData.uploadUrl, {
+        method: "PUT",
+        body: file,
+        headers: {
+          "Content-Type": presignData.contentType || file.type || "application/pdf",
+        },
+      });
+    } catch {
+      throw new Error(
+        "Direct upload failed. Add CORS on the resume S3 bucket for your site domain (www and Amplify URL)."
+      );
+    }
+
+    if (!putResponse.ok) {
+      throw new Error(
+        putResponse.status === 403
+          ? "Direct upload blocked. Check S3 bucket CORS and PutObject permissions."
+          : "Direct upload to storage failed."
+      );
+    }
+
+    const confirmResponse = await fetch("/api/admin/resume", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "confirm" }),
+    });
+
+    const confirmData = await readApiResponse(confirmResponse);
+
+    if (!confirmResponse.ok) {
+      throw new Error(confirmData.message || "Unable to confirm resume upload.");
+    }
+
+    return confirmData;
+  }
+
+  const formData = new FormData();
+  formData.set("resume", file);
+
+  const response = await fetch("/api/admin/resume", {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await readApiResponse(response);
+
+  if (!response.ok) {
+    throw new Error(data.message || "Unable to upload resume.");
+  }
+
+  return data;
 }
 
 function formatFileSize(bytes: number) {
@@ -72,19 +161,18 @@ export function ResumeUploadPanel() {
     setError("");
 
     const form = event.currentTarget;
-    const formData = new FormData(form);
+    const fileInput = form.elements.namedItem("resume");
+
+    if (!(fileInput instanceof HTMLInputElement) || !fileInput.files?.[0]) {
+      setError("A PDF resume file is required.");
+      setUploading(false);
+      return;
+    }
+
+    const file = fileInput.files[0];
 
     try {
-      const response = await fetch("/api/admin/resume", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await readApiResponse(response);
-
-      if (!response.ok) {
-        throw new Error(data.message || "Unable to upload resume.");
-      }
+      const data = await uploadResumeFile(file);
 
       setResume(data.resume ?? null);
       setMessage(data.message || "Resume uploaded successfully.");

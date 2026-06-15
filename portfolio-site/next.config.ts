@@ -24,6 +24,7 @@ const nextConfig: NextConfig = {
     "@aws-sdk/client-cognito-identity-provider",
     "@aws-sdk/client-dynamodb",
     "@aws-sdk/client-s3",
+    "@aws-sdk/s3-request-presigner",
     "@aws-sdk/client-sesv2",
     "@aws-sdk/lib-dynamodb",
   ],

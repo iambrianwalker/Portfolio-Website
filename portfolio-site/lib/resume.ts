@@ -4,6 +4,7 @@ import {
   PutObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { promises as fs } from "fs";
 import path from "path";
 import type { ResumeMetadata } from "@/types/admin";
@@ -26,8 +27,12 @@ function usesS3Storage() {
   return Boolean(s3Client && getResumeBucketName());
 }
 
+function isPdfUpload(fileName: string, contentType: string) {
+  return contentType === "application/pdf" || fileName.toLowerCase().endsWith(".pdf");
+}
+
 function isPdfFile(file: File) {
-  return file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
+  return isPdfUpload(file.name, file.type);
 }
 
 export type { ResumeMetadata } from "@/types/admin";
@@ -125,6 +130,86 @@ export async function getResumeFile() {
     };
   } catch {
     return null;
+  }
+}
+
+function validateResumeUploadInput(fileName: string, fileSize: number, contentType: string) {
+  if (!isPdfUpload(fileName, contentType)) {
+    throw new Error("Only PDF files are allowed.");
+  }
+
+  if (fileSize > MAX_RESUME_BYTES) {
+    throw new Error("Resume must be 5 MB or smaller.");
+  }
+
+  if (fileSize <= 0) {
+    throw new Error("The uploaded file is empty.");
+  }
+}
+
+export async function createResumePresignedUploadUrl(
+  fileName: string,
+  fileSize: number,
+  contentType: string
+) {
+  validateResumeUploadInput(fileName, fileSize, contentType);
+
+  if (!usesS3Storage()) {
+    return { mode: "multipart" as const };
+  }
+
+  const uploadedAt = new Date().toISOString();
+  const command = new PutObjectCommand({
+    Bucket: getResumeBucketName(),
+    Key: RESUME_S3_KEY,
+    ContentType: "application/pdf",
+    ContentLength: fileSize,
+    ContentDisposition: `attachment; filename="${DOWNLOAD_FILE_NAME}"`,
+    Metadata: {
+      originalfilename: fileName,
+      uploadedat: uploadedAt,
+    },
+  });
+
+  try {
+    const uploadUrl = await getSignedUrl(s3Client!, command, { expiresIn: 300 });
+
+    return {
+      mode: "presigned" as const,
+      uploadUrl,
+      contentType: "application/pdf",
+    };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "S3 presign failed";
+    throw new Error(
+      `Unable to prepare resume upload (${getResumeBucketName()}). Check compute role s3:PutObject permission. ${message}`
+    );
+  }
+}
+
+export async function confirmResumeUpload(): Promise<ResumeMetadata> {
+  if (!usesS3Storage()) {
+    throw new Error("Direct upload confirmation is only available for S3 storage.");
+  }
+
+  try {
+    const response = await s3Client!.send(
+      new HeadObjectCommand({
+        Bucket: getResumeBucketName(),
+        Key: RESUME_S3_KEY,
+      })
+    );
+
+    return {
+      fileName: DOWNLOAD_FILE_NAME,
+      uploadedAt: response.LastModified?.toISOString() ?? new Date().toISOString(),
+      sizeBytes: response.ContentLength ?? 0,
+      storage: "s3",
+      downloadPath: getResumeDownloadPath(),
+    };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "S3 object not found";
+    throw new Error(`Uploaded resume was not found in S3. ${message}`);
   }
 }
 
