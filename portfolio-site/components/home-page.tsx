@@ -18,7 +18,7 @@ export function HomePage() {
               Brian Walker
             </h1>
             <p className="text-xl font-medium text-cyan-400 sm:text-2xl">
-              Software Developer | Mobile & Web Developer | AWS Enthusiast
+              Software Engineer | Full Stack Developer | AWS Enthusiast
             </p>
             <p className="max-w-xl text-lg leading-8 text-zinc-400">
               I build thoughtful digital products with modern web tools and a strong focus on clean backend and frontend experiences.

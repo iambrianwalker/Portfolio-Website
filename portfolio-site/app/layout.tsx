@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Brian Walker | Software Developer",
+  title: "Brian Walker | Software Engineer",
   description:
-    "Personal portfolio site for Brian Walker, a developer and CS student focused on modern web experiences.",
+    "Personal portfolio site for Brian Walker, a software engineer and CS graduate focused on modern web experiences.",
 };
 
 export default function RootLayout({
