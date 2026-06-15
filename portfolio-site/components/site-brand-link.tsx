@@ -29,7 +29,7 @@ export function SiteBrandLink() {
       href="/"
       onClick={handleClick}
       onMouseDown={handleMouseDown}
-      className="cursor-pointer text-sm font-semibold uppercase tracking-[0.24em] text-zinc-100 transition hover:text-cyan-300"
+      className="cursor-pointer text-center text-sm font-semibold uppercase tracking-[0.16em] text-zinc-100 transition hover:text-cyan-300 sm:tracking-[0.24em]"
       title="Shift+click for admin login"
     >
       Brian Walker

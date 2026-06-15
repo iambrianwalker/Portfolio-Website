@@ -8,9 +8,11 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
     <div className="mx-auto flex min-h-screen w-full max-w-7xl flex-col px-4 py-4 sm:px-6 lg:px-8">
       <PageViewTracker />
       <header className="sticky top-4 z-20 mb-4 rounded-full border border-white/10 bg-zinc-900/80 px-4 py-3 shadow-lg shadow-black/20 backdrop-blur">
-        <nav className="flex flex-wrap items-center justify-between gap-3">
-          <SiteBrandLink />
-          <div className="flex flex-wrap items-center gap-2 text-sm text-zinc-400">
+        <nav className="flex flex-col items-center gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+          <div className="flex w-full justify-center sm:w-auto sm:justify-start">
+            <SiteBrandLink />
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-2 text-sm text-zinc-400 sm:justify-end">
             {navigation.map((item) => (
               <Link
                 key={item.href}
