@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatedSection } from "@/components/animated-section";
 import { SectionHeading } from "@/components/section-heading";
 
@@ -20,16 +20,82 @@ const initialState: FormState = {
   company: "",
 };
 
+const DRAFT_STORAGE_KEY = "portfolio-contact-draft";
+
+function readStoredDraft(): FormState {
+  if (typeof window === "undefined") {
+    return initialState;
+  }
+
+  try {
+    const saved = sessionStorage.getItem(DRAFT_STORAGE_KEY);
+
+    if (!saved) {
+      return initialState;
+    }
+
+    const parsed = JSON.parse(saved) as Partial<FormState>;
+
+    return {
+      ...initialState,
+      name: parsed.name ?? "",
+      email: parsed.email ?? "",
+      subject: parsed.subject ?? "",
+      message: parsed.message ?? "",
+    };
+  } catch {
+    return initialState;
+  }
+}
+
+function persistDraft(form: FormState) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  sessionStorage.setItem(
+    DRAFT_STORAGE_KEY,
+    JSON.stringify({
+      name: form.name,
+      email: form.email,
+      subject: form.subject,
+      message: form.message,
+    })
+  );
+}
+
+function clearStoredDraft() {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  sessionStorage.removeItem(DRAFT_STORAGE_KEY);
+}
+
+function preventEnterSubmit(event: React.KeyboardEvent<HTMLInputElement>) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+  }
+}
+
 export default function ContactPage() {
   const [form, setForm] = useState<FormState>(initialState);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
 
+  useEffect(() => {
+    setForm(readStoredDraft());
+  }, []);
+
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = event.target;
-    setForm((current) => ({ ...current, [name]: value }));
+    setForm((current) => {
+      const next = { ...current, [name]: value };
+      persistDraft(next);
+      return next;
+    });
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -59,6 +125,7 @@ export default function ContactPage() {
 
       setStatus("success");
       setMessage(data.message || "Your message has been received.");
+      clearStoredDraft();
       setForm(initialState);
     } catch (error) {
       setStatus("error");
@@ -100,6 +167,8 @@ export default function ContactPage() {
                 name="name"
                 value={form.name}
                 onChange={handleChange}
+                onKeyDown={preventEnterSubmit}
+                autoComplete="name"
                 className="w-full rounded-xl border border-white/10 bg-zinc-950/70 px-4 py-3 text-zinc-100 outline-none ring-0 transition focus:border-cyan-400"
                 placeholder="Brian Walker"
               />
@@ -111,6 +180,8 @@ export default function ContactPage() {
                 name="email"
                 value={form.email}
                 onChange={handleChange}
+                onKeyDown={preventEnterSubmit}
+                autoComplete="email"
                 className="w-full rounded-xl border border-white/10 bg-zinc-950/70 px-4 py-3 text-zinc-100 outline-none transition focus:border-cyan-400"
                 placeholder="you@example.com"
               />
@@ -123,6 +194,8 @@ export default function ContactPage() {
               name="subject"
               value={form.subject}
               onChange={handleChange}
+              onKeyDown={preventEnterSubmit}
+              autoComplete="off"
               className="w-full rounded-xl border border-white/10 bg-zinc-950/70 px-4 py-3 text-zinc-100 outline-none transition focus:border-cyan-400"
               placeholder="Project discussion"
             />
