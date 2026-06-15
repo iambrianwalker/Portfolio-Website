@@ -115,6 +115,15 @@ From the dashboard you can:
 
 Without `RESUME_S3_BUCKET`, the bundled `public/resume.pdf` is served, but **admin uploads will not persist** on Amplify’s ephemeral filesystem. Create an S3 bucket and set `RESUME_S3_BUCKET` for production resume management.
 
+Admin uploads use a **presigned S3 PUT** from the browser. Configure bucket CORS before uploading:
+
+1. Open **S3 → your resume bucket → Permissions → Cross-origin resource sharing (CORS) → Edit**.
+2. Paste the JSON from [`infra/s3-resume-cors.json`](infra/s3-resume-cors.json).
+3. Add your Amplify branch URL to `AllowedOrigins` (e.g. `https://dev.xxxxx.amplifyapp.com`) if you test there.
+4. Save. CORS applies immediately — no redeploy required on S3.
+
+Required origins: `https://www.iambrianwalker.com`, `https://iambrianwalker.com`, `http://localhost:3000`, and any Amplify default domain you use.
+
 ## API routes
 
 | Route | Access | Purpose |

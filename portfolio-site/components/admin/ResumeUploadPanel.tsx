@@ -23,6 +23,9 @@ async function readApiResponse(response: Response) {
       success?: boolean;
       message?: string;
       resume?: ResumeMetadata;
+      mode?: "presigned" | "multipart";
+      uploadUrl?: string;
+      contentType?: string;
     };
   } catch {
     throw new Error(
@@ -34,6 +37,63 @@ async function readApiResponse(response: Response) {
 }
 
 async function uploadResumeFile(file: File) {
+  const presignResponse = await fetch("/api/admin/resume", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      action: "presign",
+      fileName: file.name,
+      fileSize: file.size,
+      contentType: file.type || "application/pdf",
+    }),
+  });
+
+  const presignData = await readApiResponse(presignResponse);
+
+  if (!presignResponse.ok) {
+    throw new Error(presignData.message || "Unable to prepare resume upload.");
+  }
+
+  if (presignData.mode === "presigned" && presignData.uploadUrl) {
+    let putResponse: Response;
+
+    try {
+      putResponse = await fetch(presignData.uploadUrl, {
+        method: "PUT",
+        body: file,
+        headers: {
+          "Content-Type": presignData.contentType || file.type || "application/pdf",
+        },
+      });
+    } catch {
+      throw new Error(
+        "Direct upload failed. Add CORS on the resume S3 bucket using infra/s3-resume-cors.json (include www, apex, and Amplify URLs)."
+      );
+    }
+
+    if (!putResponse.ok) {
+      throw new Error(
+        putResponse.status === 403
+          ? "Direct upload blocked. Check S3 bucket CORS and PutObject permissions on resume/*."
+          : `Direct upload to storage failed (${putResponse.status}).`
+      );
+    }
+
+    const confirmResponse = await fetch("/api/admin/resume", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "confirm" }),
+    });
+
+    const confirmData = await readApiResponse(confirmResponse);
+
+    if (!confirmResponse.ok) {
+      throw new Error(confirmData.message || "Unable to confirm resume upload.");
+    }
+
+    return confirmData;
+  }
+
   const formData = new FormData();
   formData.set("resume", file);
 
