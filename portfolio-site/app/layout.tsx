@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { SITE_DESCRIPTION, SITE_URL } from "@/lib/site-url";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,9 +14,22 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Brian Walker | Software Engineer",
-  description:
-    "Personal portfolio site for Brian Walker, a software engineer and CS graduate focused on modern web experiences.",
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    title: "Brian Walker | Software Engineer",
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    siteName: "Brian Walker Portfolio",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Brian Walker | Software Engineer",
+    description: SITE_DESCRIPTION,
+  },
 };
 
 export default function RootLayout({

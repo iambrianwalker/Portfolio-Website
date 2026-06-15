@@ -56,9 +56,22 @@ export async function POST(request: Request) {
     return rateLimitResponse;
   }
 
+  let body: unknown;
+
   try {
-    const body = await request.json();
-    const eventType = body?.eventType;
+    body = await request.json();
+  } catch {
+    return NextResponse.json(
+      { success: false, message: "Invalid JSON body" },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const eventType =
+      typeof body === "object" && body !== null && "eventType" in body
+        ? (body as { eventType?: unknown }).eventType
+        : undefined;
 
     if (!isAnalyticsEventType(eventType)) {
       return NextResponse.json(
@@ -67,7 +80,12 @@ export async function POST(request: Request) {
       );
     }
 
-    const item = await recordAnalyticsEvent(eventType, body?.metadata);
+    const metadata =
+      typeof body === "object" && body !== null && "metadata" in body
+        ? (body as { metadata?: Record<string, unknown> }).metadata
+        : undefined;
+
+    const item = await recordAnalyticsEvent(eventType, metadata);
     return NextResponse.json({ success: true, event: item });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Failed to record analytics";
