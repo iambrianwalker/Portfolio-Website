@@ -53,15 +53,15 @@ export function HomePage() {
           <p className="text-sm uppercase tracking-[0.3em] text-cyan-400">Focus</p>
           <div className="mt-6 space-y-4 text-zinc-300">
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-              <p className="font-medium text-zinc-100">Frontend engineering</p>
+              <p className="font-medium text-zinc-100">Frontend Engineering</p>
               <p className="mt-2 text-sm leading-7">React, Next.js, Tailwind, and polished UI systems.</p>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-              <p className="font-medium text-zinc-100">Backend & cloud</p>
+              <p className="font-medium text-zinc-100">Backend & Cloud</p>
               <p className="mt-2 text-sm leading-7">APIs, databases, and AWS-ready architecture thinking.</p>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-              <p className="font-medium text-zinc-100">Product craft</p>
+              <p className="font-medium text-zinc-100">Product Craft</p>
               <p className="mt-2 text-sm leading-7">Designing clear interfaces and thoughtful developer experiences.</p>
             </div>
           </div>
