@@ -158,17 +158,14 @@ export async function createResumePresignedUploadUrl(
     return { mode: "multipart" as const };
   }
 
-  const uploadedAt = new Date().toISOString();
+  // Only sign headers the browser will send on PUT (Content-Type). Extra fields like
+  // ContentDisposition or Metadata require matching x-amz-* headers on the client and
+  // otherwise cause SignatureDoesNotMatch (403).
   const command = new PutObjectCommand({
     Bucket: getResumeBucketName(),
     Key: RESUME_S3_KEY,
     ContentType: "application/pdf",
     ContentLength: fileSize,
-    ContentDisposition: `attachment; filename="${DOWNLOAD_FILE_NAME}"`,
-    Metadata: {
-      originalfilename: fileName,
-      uploadedat: uploadedAt,
-    },
   });
 
   try {

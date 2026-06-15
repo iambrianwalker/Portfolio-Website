@@ -72,10 +72,13 @@ async function uploadResumeFile(file: File) {
     }
 
     if (!putResponse.ok) {
+      const s3Error = (await putResponse.text()).replace(/\s+/g, " ").trim().slice(0, 240);
+      const detail = s3Error ? ` ${s3Error}` : "";
+
       throw new Error(
         putResponse.status === 403
-          ? "Direct upload blocked. Check S3 bucket CORS and PutObject permissions on resume/*."
-          : `Direct upload to storage failed (${putResponse.status}).`
+          ? `Direct upload blocked (403). Check Amplify IAM s3:PutObject on resume/* and S3 CORS for your site domain.${detail}`
+          : `Direct upload to storage failed (${putResponse.status}).${detail}`
       );
     }
 
