@@ -1,31 +1,26 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useAdminPaths } from "@/components/admin-path-provider";
 
-type SiteBrandLinkProps = {
-  adminLoginPath: string;
-};
+export function SiteBrandLink() {
+  const { loginPath } = useAdminPaths();
 
-export function SiteBrandLink({ adminLoginPath }: SiteBrandLinkProps) {
-  const router = useRouter();
-
-  function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+  function handleClick(event: React.MouseEvent<HTMLAnchorElement>) {
     if (event.shiftKey) {
-      window.location.assign(adminLoginPath);
-      return;
+      event.preventDefault();
+      window.location.assign(loginPath);
     }
-
-    router.push("/");
   }
 
   return (
-    <button
-      type="button"
+    <Link
+      href="/"
       onClick={handleClick}
       className="cursor-pointer text-sm font-semibold uppercase tracking-[0.24em] text-zinc-100 transition hover:text-cyan-300"
       title="Shift+click for admin login"
     >
       Brian Walker
-    </button>
+    </Link>
   );
 }

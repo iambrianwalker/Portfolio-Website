@@ -1,5 +1,11 @@
 const DEFAULT_ADMIN_PATH = "/admin";
 
+declare global {
+  interface Window {
+    __ADMIN_BASE_PATH__?: string;
+  }
+}
+
 function normalizePath(path: string) {
   const trimmed = path.trim();
   if (!trimmed || trimmed === "/") {
@@ -71,6 +77,10 @@ export function toPublicAdminPath(internalPath: string) {
 }
 
 export function getClientAdminBasePath() {
+  if (typeof window !== "undefined" && window.__ADMIN_BASE_PATH__) {
+    return normalizePath(window.__ADMIN_BASE_PATH__);
+  }
+
   return normalizePath(process.env.NEXT_PUBLIC_ADMIN_BASE_PATH || DEFAULT_ADMIN_PATH);
 }
 

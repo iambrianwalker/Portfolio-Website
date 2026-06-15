@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { AdminPathProvider } from "@/components/admin-path-provider";
+import {
+  getAdminBasePath,
+  getAdminDashboardPath,
+  getAdminLoginPath,
+} from "@/lib/admin-path";
 import { SITE_DESCRIPTION, SITE_URL } from "@/lib/site-url";
 import "./globals.css";
 
@@ -43,7 +49,15 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full bg-zinc-950 text-zinc-100">{children}</body>
+      <body className="min-h-full bg-zinc-950 text-zinc-100">
+        <AdminPathProvider
+          basePath={getAdminBasePath()}
+          loginPath={getAdminLoginPath()}
+          dashboardPath={getAdminDashboardPath()}
+        >
+          {children}
+        </AdminPathProvider>
+      </body>
     </html>
   );
 }

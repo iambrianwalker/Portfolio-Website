@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { Suspense, FormEvent, useState } from "react";
-import { getClientAdminDashboardPath } from "@/lib/admin-path";
+import { useAdminPaths } from "@/components/admin-path-provider";
 
 function AdminLoginForm() {
+  const { dashboardPath } = useAdminPaths();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -30,7 +31,7 @@ function AdminLoginForm() {
       }
 
       const redirectTo =
-        typeof data.redirectTo === "string" ? data.redirectTo : getClientAdminDashboardPath();
+        typeof data.redirectTo === "string" ? data.redirectTo : dashboardPath;
 
       window.location.assign(redirectTo);
     } catch {

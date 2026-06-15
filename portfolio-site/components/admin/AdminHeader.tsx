@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useAdminPaths } from "@/components/admin-path-provider";
 
 type AdminHeaderProps = {
   dashboardPath: string;
@@ -9,6 +10,8 @@ type AdminHeaderProps = {
 };
 
 export function AdminHeader({ dashboardPath, loginPath }: AdminHeaderProps) {
+  const { loginPath: clientLoginPath } = useAdminPaths();
+  const resolvedLoginPath = loginPath || clientLoginPath;
   const [loading, setLoading] = useState(false);
 
   async function handleLogout() {
@@ -23,7 +26,7 @@ export function AdminHeader({ dashboardPath, loginPath }: AdminHeaderProps) {
       }
 
       window.location.assign(
-        typeof data.redirectTo === "string" ? data.redirectTo : loginPath
+        typeof data.redirectTo === "string" ? data.redirectTo : resolvedLoginPath
       );
     } catch {
       setLoading(false);

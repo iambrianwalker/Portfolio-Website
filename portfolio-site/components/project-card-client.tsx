@@ -12,9 +12,17 @@ type ProjectCardClientProps = {
 export function ProjectCardClient({ project }: ProjectCardClientProps) {
   return (
     <article className="rounded-2xl border border-white/10 bg-zinc-900/70 p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.02)] backdrop-blur">
-      <div>
-        <h3 className="text-xl font-semibold text-zinc-100">{project.title}</h3>
-        <p className="mt-3 text-sm leading-7 text-zinc-400">{project.description}</p>
+      <div className="flex items-start gap-4">
+        <div
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-cyan-400/20 bg-cyan-400/10 text-2xl"
+          aria-hidden
+        >
+          {project.symbol}
+        </div>
+        <div>
+          <h3 className="text-xl font-semibold text-zinc-100">{project.title}</h3>
+          <p className="mt-3 text-sm leading-7 text-zinc-400">{project.description}</p>
+        </div>
       </div>
 
       <div className="mt-6 flex flex-wrap gap-2">

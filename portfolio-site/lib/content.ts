@@ -1,6 +1,7 @@
 export type Project = {
   title: string;
   description: string;
+  symbol: string;
   stack: string[];
   github: string;
   demo?: string;
@@ -27,6 +28,7 @@ export const navigation = [
 export const projects: Project[] = [
   {
     title: "Habit Mastery League App",
+    symbol: "🏆",
     description:
       "A gamified habit-tracking app that transforms personal growth into an engaging experience with streaks, progress tracking, achievement milestones, and an AI Habit Buddy for motivation and goal-setting.",
     stack: ["Flutter", "Dart", "SQLite", "SharedPreferences"],
@@ -34,6 +36,7 @@ export const projects: Project[] = [
   },
   {
     title: "NextHaul Moving App",
+    symbol: "🚚",
     description:
       "A cloud-powered moving logistics platform featuring user authentication, booking management, real-time messaging, and move status tracking, built with Flutter and AWS serverless technologies.",
     stack: ["Flutter", "Dart", "AWS Amplify", "DynamoDB", "AWS Cognito"],
@@ -41,6 +44,7 @@ export const projects: Project[] = [
   },
   {
     title: "FocusNFlow App",
+    symbol: "📚",
     description:
       "A study organization platform that streamlines academic planning through intelligent scheduling, collaborative study groups, real-time chat, study space management, and personalized task prioritization.",
     stack: ["Flutter", "Firebase", "Cloud Firestore", "Firebase Authentication"],
@@ -48,6 +52,7 @@ export const projects: Project[] = [
   },
   {
     title: "Portfolio Website",
+    symbol: "💻",
     description:
       "A polished personal site designed to showcase development work, technical interests, and a modern professional presence.",
     stack: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "AWS Amplify", "DynamoDB"],
@@ -55,6 +60,7 @@ export const projects: Project[] = [
   },
   {
     title: "YesterYear Website",
+    symbol: "🎵",
     description:
       "A website for a local music enthusiast to promote upcoming artists in the Atlanta area.",
     stack: ["HTML", "CSS", "JavaScript"],
@@ -62,6 +68,7 @@ export const projects: Project[] = [
   },
   {
     title: "PetPal Website",
+    symbol: "🐾",
     description:
       "A full-stack pet management platform that enables users to manage pet profiles, access pet care resources, and interact with pet-related services using a database-driven web application.",
     stack: ["PHP", "HTML", "CSS", "JavaScript", "MySQL"],
